@@ -38,7 +38,6 @@
 
         .app-container { max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--bg-page); }
 
-        /* Шапка */
         .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
@@ -48,7 +47,6 @@
         .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; cursor: pointer; }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
-        /* Контент */
         .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; }
         .screen { display: none; opacity: 0; width: 100%; }
         .screen.active { display: block; animation: screenIn 0.3s ease forwards; }
@@ -57,7 +55,6 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        /* Стандарт кнопок */
         .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
@@ -65,31 +62,29 @@
         .btn-danger-fill { background: var(--danger); color: white; border: none; }
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
 
-        /* Редактор */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; overflow: hidden; height: 42px; }
         .model-name-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
         .model-name-text { font-size: 19px; font-weight: 800; display: inline-block; }
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
         @keyframes marqueeBounce { 0%, 20% { transform: translateX(0); } 80%, 100% { transform: translateX(var(--move-dist)); } }
 
-        .mem-chips-wrap { display: flex; gap: 2px; background: var(--surface-2); padding: 3px; border-radius: 12px; border: 0.5px solid var(--border); flex-shrink: 0; }
-        .mem-chip { padding: 6px 10px; border-radius: 9px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; }
+        .mem-chips-wrap { display: flex; gap: 2px; background: var(--surface-2); padding: 3px; border-radius: 12px; border: 0.5px solid var(--border); flex-shrink: 0; overflow-x: auto; scrollbar-width: none; scroll-padding: 10px; }
+        .mem-chip { padding: 6px 10px; border-radius: 9px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; flex: 1; min-width: 45px; }
         .mem-chip.active { background: var(--surface) !important; color: var(--primary) !important; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transform: scale(1.03); }
 
-        .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px 15px; margin: 0 -16px; scrollbar-width: none; }
+        .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px 15px; margin: 0 -16px; scrollbar-width: none; scroll-padding: 20px; }
         .group-chip { background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); position: relative; transition: all 0.3s ease; cursor: pointer; }
         .group-chip.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary); }
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: #34c759; border-radius: 50%; }
 
-        /* Счётчики Grid */
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
+        .color-info { display: flex; align-items: center; gap: 12px; }
+        .color-emoji { font-size: 24px; }
+        .color-label { font-weight: 600; font-size: 15px; color: var(--text-secondary); }
+
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .c-input { 
-            width: 100%; text-align: center; border: none; background: transparent; 
-            font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; padding: 0;
-            display: grid; place-items: center; appearance: none; -webkit-appearance: none; -moz-appearance: textfield;
-        }
+        .c-input { width: 100%; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; padding: 0; display: grid; place-items: center; appearance: none; -webkit-appearance: none; -moz-appearance: textfield; }
         .c-input::-webkit-inner-spin-button, .c-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
@@ -104,7 +99,6 @@
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
-        /* Тема */
         .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; color: var(--text-primary); transition: 0.2s; }
         .theme-item.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary) !important; }
 
@@ -182,7 +176,6 @@
                 <div id="colorsList"></div>
             </div>
             <div style="display: flex; gap: 12px;">
-                <!-- ДИНАМИЧЕСКАЯ КНОПКА (ОЧИСТИТЬ / УДАЛИТЬ) -->
                 <button id="editorDangerBtn" class="btn btn-danger" onclick="app.handleEditorReset()">Очистить</button>
                 <button class="btn btn-primary" onclick="app.finish()">Завершить</button>
             </div>
@@ -369,7 +362,7 @@ const app = {
         app.state.activeTab = tab;
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + tab));
         document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === tab + 'Screen'));
-        document.getElementById('globalBackBtn').classList.remove('visible');
+        document.getElementById('globalBackBtn').classList.toggle('visible', false);
         document.getElementById('headerStatus').style.display = 'none';
         document.getElementById('headerTitle').innerText = (tab === 'history') ? 'История' : 'СкладРасклад';
         app.updateDraftBtnUI(); app.showInstallBtn(); if(tab === 'history') app.renderHistory();
@@ -384,12 +377,11 @@ const app = {
         const statusEl = document.getElementById('headerStatus');
         statusEl.style.display = 'block';
         statusEl.innerText = (context === 'history') ? '📜 ИЗ ИСТОРИИ' : (context === 'draft') ? '📂 ЧЕРНОВИК' : '✨ НОВЫЙ';
-        
-        // Кнопка в редакторе: Очистить или Удалить
         document.getElementById('editorDangerBtn').innerText = (context === 'history') ? 'Удалить' : 'Очистить';
-
         app.renderGroupsUI(); app.triggerAnim('model');
     },
+
+    scrollToChip(el) { if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); },
 
     handleEditorReset() {
         if (app.state.editContext === 'history') app.openSheet('entryDeleteSheet');
@@ -439,17 +431,21 @@ const app = {
             const hasData = app.state.stock[m.name] && Object.values(app.state.stock[m.name]).some(mem => Object.values(mem).some(v => v > 0));
             return `<div class="group-chip ${app.state.curModel === m.name ? 'active' : ''}" data-name="${m.name}" onclick="app.setModel('${m.name}')">${m.name}${hasData ? '<div class="dot"></div>' : ''}</div>`;
         }).join('');
+        const active = container.querySelector('.active');
+        setTimeout(() => app.scrollToChip(active), 100);
     },
 
     setModel(name) {
         app.state.curModel = name; app.state.curMem = app.models.find(m => m.name === name).mem[0];
         document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-name') === name));
+        app.scrollToChip(document.querySelector('.group-chip.active'));
         app.triggerAnim('model');
     },
 
     setMem(m) { 
         app.state.curMem = m; 
         document.querySelectorAll('.mem-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-mem') === m));
+        app.scrollToChip(document.querySelector('.mem-chip.active'));
         app.triggerAnim('memory'); 
     },
 
@@ -484,8 +480,17 @@ const app = {
         let sorted = [...model.col].sort((a,b) => { const p = {"💛": 1, "❤️": 2}; return (p[a] || 0) - (p[b] || 0); });
         document.getElementById('colorsList').innerHTML = sorted.map(c => {
             const val = app.state.stock[model.name]?.[app.state.curMem]?.[c] || 0;
-            return `<div class="color-item"><div style="display:flex; align-items:center; gap:12px;"><span style="font-size:24px;">${c}</span><span style="font-weight:600; font-size:15px; color:var(--text-secondary);">${app.getLabel(c, model.name)}</span></div>
-                <div class="counter-box"><button class="c-btn" onclick="app.changeCount('${c}', -1)">−</button><input type="number" inputmode="numeric" class="c-input" value="${val}" onfocus="this.select()" oninput="app.setCount('${c}', this.value)" onblur="if(this.value === '') { this.value = '0'; app.setCount('${c}', 0); }"><button class="c-btn" onclick="app.changeCount('${c}', 1)">+</button></div></div>`;
+            return `<div class="color-item">
+                <div class="color-info">
+                    <span class="color-emoji">${c}</span>
+                    <span class="color-label">${app.getLabel(c, model.name)}</span>
+                </div>
+                <div class="counter-box">
+                    <button class="c-btn" onclick="app.changeCount('${c}', -1)">−</button>
+                    <input type="number" inputmode="numeric" class="c-input" value="${val}" onfocus="this.select()" oninput="app.setCount('${c}', this.value)" onblur="if(this.value === '') { this.value = '0'; app.setCount('${c}', 0); }">
+                    <button class="c-btn" onclick="app.changeCount('${c}', 1)">+</button>
+                </div>
+            </div>`;
         }).join('');
     },
 
@@ -558,9 +563,7 @@ const app = {
         if (entry) {
             entry.content = t; entry.stock = JSON.parse(JSON.stringify(app.state.stock));
             localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
-            app.state.stock = {}; app.save(); app.closeSheets(true); 
-            app.toast("Сохранено!"); 
-            setTimeout(() => app.navTo('home'), 200);
+            app.state.stock = {}; app.save(); app.closeSheets(true); app.toast("Сохранено!"); setTimeout(() => app.navTo('home'), 200);
         }
     },
 
@@ -578,8 +581,7 @@ const app = {
         app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null;
         app.save(); app.renderHistory(); app.closeSheets(true);
         const phrases = { 'share': "Отправлено и сохранено!", 'copy': "Скопировано и сохранено!" };
-        app.toast(phrases[method] || "Сохранено!"); 
-        setTimeout(() => app.navTo('home'), 200);
+        app.toast(phrases[method] || "Сохранено!"); setTimeout(() => app.navTo('home'), 200);
     },
 
     renderHistory() {
@@ -614,37 +616,31 @@ const app = {
     editFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
         if(item) { 
-            app.state.stock = JSON.parse(JSON.stringify(item.stock)); 
-            app.save(); 
+            app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); 
             app.closeSheets(true); 
             setTimeout(() => { app.navTo('home', false); app.openEditor('history'); }, 250);
         }
     },
 
     deleteFromHistory() {
-        if (app.state.editContext === 'history' && app.state.selectedHistoryId) { app.state.stock = {}; app.save(); app.state.editContext = 'new'; }
+        const wasInEditor = (app.state.editContext === 'history');
         app.state.history = app.state.history.filter(h => h.id != app.state.selectedHistoryId);
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
+        if (wasInEditor) { app.state.stock = {}; app.save(); app.state.editContext = 'new'; }
         app.renderHistory(); app.closeSheets(true); app.toast("Удалено");
-        setTimeout(() => app.navTo('home'), 300);
+        setTimeout(() => app.navTo('home'), 200);
     },
 
     clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(true); app.toast("История очищена"); },
 
     openSheet(id) { 
         const el = document.getElementById(id);
-        if(el) {
-            history.pushState({ view: 'sheet', tab: app.state.activeTab, sheetId: id }, '', '');
-            el.classList.add('active');
-        }
+        if(el) { history.pushState({ view: 'sheet', tab: app.state.activeTab, sheetId: id }, '', ''); el.classList.add('active'); }
     },
     
     closeSheets(back = true) { 
         const active = document.querySelector('.sheet-overlay.active');
-        if(active) {
-            active.classList.remove('active');
-            if(back && history.state?.view === 'sheet') history.back();
-        }
+        if(active) { active.classList.remove('active'); if(back && history.state?.view === 'sheet') history.back(); }
     },
     
     setTheme(m, close=true) {
