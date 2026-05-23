@@ -8,11 +8,10 @@
     <!-- PWA & iOS Meta -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="СкладРасклад">
-    <link rel="apple-touch-icon" href="./icon-256.png">
     <meta name="theme-color" id="themeColorMeta" content="#f2f2f7">
     
     <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icon-256.png">
     <link rel="icon" type="image/png" href="./icon-64.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -22,48 +21,33 @@
             --bg-page: #f2f2f7; --surface: #ffffff; --surface-2: #f1f3f7;
             --text-primary: #000000; --text-secondary: #636366; --text-tertiary: #aeaeb2;
             --border: #d1d1d6; --primary: #007aff; --danger: #ff3b30; --danger-bg: #ffe9e9;
-            --header-bg: #f2f2f7; /* Светлый фон iOS хедера */
-            --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+            --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-bg: #effdde; --tg-text: #000000;
         }
         body.dark {
             --bg-page: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e;
             --text-primary: #ffffff; --text-secondary: #8e8e93; --text-tertiary: #48484a;
             --border: #38383a; --primary: #0a84ff; --danger: #ff453a; --danger-bg: #2c1514;
-            --header-bg: #1c1c1e; /* Глубокий серый для темной темы */
             --tg-bg: #2b5278; --tg-text: #ffffff;
         }
 
-        html, body { height: 100dvh; overflow: hidden; position: fixed; width: 100%; background: var(--bg-page); }
+        html, body { height: 100%; width: 100%; background: var(--bg-page); overflow: hidden; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; color: var(--text-primary); transition: background 0.3s; }
 
-        .app-container { 
-            max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; 
-            display: flex; flex-direction: column;
-            background: var(--header-bg); /* Важно для бесшовного статус-бара */
-            padding-bottom: calc(75px + var(--safe-bottom));
-        }
+        .app-container { max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--bg-page); }
 
         /* Шапка */
-        .app-header { 
-            padding: calc(15px + var(--safe-top)) 20px 10px;
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--header-bg); z-index: 10; flex-shrink: 0; min-height: 75px;
-            border-bottom: 0.5px solid var(--border); /* Нативный разделитель iOS */
-        }
+        .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; background: transparent; z-index: 10; flex-shrink: 0; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
-        .app-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin: 0; line-height: 1.2; }
+        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; text-align: left; }
         .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; }
 
-        .back-btn { 
-            width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); 
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin-right 0.3s ease;
-        }
+        .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin-right 0.3s ease; }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
-        /* Экраны */
-        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px; position: relative; background: var(--bg-page); }
+        /* Контент */
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; }
         .screen { display: none; opacity: 0; width: 100%; }
         .screen.active { display: block; animation: screenIn 0.3s ease forwards; }
         @keyframes screenIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -71,80 +55,92 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
+        /* КНОПКИ - УНИФИКАЦИЯ */
+        .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
-        .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(255,59,48,0.15); }
+        
+        /* Опасная кнопка (триггер шторки) */
+        .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
+        /* Опасная кнопка (подтверждение в шторке) */
+        .btn-danger-fill { background: var(--danger); color: white; border: none; }
+        
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
 
-        /* Маятник названия модели */
+        /* Маятник */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; overflow: hidden; }
         .model-name-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
-        .model-name-text { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; display: inline-block; }
+        .model-name-text { font-size: 19px; font-weight: 800; display: inline-block; }
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
-        @keyframes marqueeBounce { 
-            0%, 20% { transform: translateX(0); } 
-            80%, 100% { transform: translateX(var(--move-dist)); } 
-        }
+        @keyframes marqueeBounce { 0%, 20% { transform: translateX(0); } 80%, 100% { transform: translateX(var(--move-dist)); } }
 
-        /* Чипсы памяти (Плавная смена состояний) */
+        /* Чипсы */
         .mem-chips-wrap { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 14px; border: 0.5px solid var(--border); }
-        .mem-chip { 
-            padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; 
-            background: transparent; color: var(--text-secondary); border: none; cursor: pointer;
-            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease, transform 0.2s ease, box-shadow 0.4s ease;
-        }
-        .mem-chip.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: scale(1.05); }
+        .mem-chip { padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; }
+        .mem-chip.active { background: var(--surface) !important; color: var(--primary) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: scale(1.05); }
 
-        .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 5px 16px 15px; margin: 0 -16px; scrollbar-width: none; }
-        .group-chip { background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); position: relative; transition: all 0.3s ease; }
-        .group-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px 15px; margin: 0 -16px; scrollbar-width: none; }
+        .group-chip { background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); position: relative; transition: all 0.3s ease; cursor: pointer; }
+        .group-chip.active { background: var(--primary) !important; color: white !important; border-color: var(--primary); }
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: #34c759; border-radius: 50%; }
 
-        /* Счётчики (Grid Центровка) */
+        /* Счётчики - ИДЕАЛЬНАЯ ЦЕНТРОВКА */
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .c-input { width: 100%; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; }
+        .c-input { 
+            width: 100%; text-align: center; border: none; background: transparent; 
+            font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none;
+            padding: 0; display: grid; place-items: center;
+            appearance: none; -webkit-appearance: none; -moz-appearance: textfield;
+        }
+        .c-input::-webkit-inner-spin-button, .c-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Нижний бар */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
-        body.dark .bottom-nav { background: rgba(28,28,30,0.85); }
-        .nav-tab { background: none; border: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; transition: color 0.3s; }
+        /* Навигация */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
+        body.dark .bottom-nav { background: rgba(0,0,0,0.75); }
+        .nav-tab { background: none; border: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; }
         .nav-tab.active { color: var(--primary); }
         .nav-tab span { font-size: 24px; }
 
         /* Шторки */
         .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; align-items: flex-end; }
         .sheet-overlay.active { opacity: 1; visibility: visible; }
-        .sheet { background: var(--bg-page); width: 100%; border-radius: 24px 24px 0 0; padding: 20px 20px calc(24px + var(--safe-bottom)); transform: translateY(100%); transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 92dvh; overflow-y: auto; }
+        .sheet { background: var(--bg-page); width: 100%; border-radius: 24px 24px 0 0; padding: 20px 20px calc(24px + var(--safe-bottom)); transform: translateY(100%); transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90dvh; overflow-y: auto; }
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
-        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 90%; text-align: left; white-space: pre-wrap; position: relative; font-family: -apple-system, sans-serif; }
-        .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; }
-        .h-date { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-align: left; }
-        .h-text { font-size: 15px; color: var(--text-primary); text-align: left; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); transition: 0.2s; cursor: pointer; color: var(--text-primary); }
+        .theme-item.active { border-color: var(--primary); background: var(--primary); color: #ffffff; }
 
-        .toast { position: fixed; bottom: calc(110px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        /* Пузыри Telegram */
+        .tg-container { display: flex; justify-content: flex-start; margin-bottom: 25px; padding-left: 10px; }
+        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .tg-bubble::after { content: ''; position: absolute; left: -8px; bottom: 0; width: 12px; height: 16px; background: var(--tg-bg); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+        /* История */
+        .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .history-card:active { transform: scale(0.98); opacity: 0.8; }
+        .h-date { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-align: left; }
+        .h-text { font-size: 15px; color: var(--text-primary); text-align: left; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+
+        .toast { position: fixed; bottom: calc(100px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; }
         .toast.active { opacity: 1; transform: translateX(-50%) scale(1); visibility: visible; }
         body.dark .toast { background: var(--primary); }
 
-        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; }
-        .theme-item.active { border-color: var(--primary); background: var(--primary); color: white; }
-
-        /* Анимации карточек */
         .card-jump-anim { animation: cardJump 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.1); }
         @keyframes cardJump { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .list-pop-anim { animation: listPop 0.3s ease-out; }
         @keyframes listPop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .footer-phrase { color: var(--text-tertiary); font-size: 11px; margin-top: 50px; line-height: 1.6; text-wrap: balance; text-align: center; max-width: 300px; }
     </style>
 </head>
 <body>
 
 <div id="toast" class="toast"></div>
 
-<div class="app-container">
+<div class="app-container" id="appContainer">
     <header class="app-header">
         <div class="header-main">
             <button class="back-btn" id="globalBackBtn" onclick="app.goBack()">←</button>
@@ -154,20 +150,20 @@
             </div>
         </div>
         <div class="header-side">
-            <button id="themeIconMain" class="theme-btn" style="font-size:24px; background:none; border:none;" onclick="app.openSheet('themeSheet')">☀️</button>
+            <button id="themeIconMain" class="theme-btn" style="font-size:22px; background:none; border:none;" onclick="app.openSheet('themeSheet')">☀️</button>
         </div>
     </header>
 
-    <main class="main-content">
+    <main class="main-content" id="scrollContent">
         <section id="homeScreen" class="screen active">
             <div class="centered-view">
-                <img src="./icon-256.png" style="width: 100px; height: 100px; border-radius: 22px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.12);">
+                <img src="./icon-256.png" style="width: 100px; height: 100px; border-radius: 22px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
                 <p style="color: var(--text-secondary); font-weight: 600; margin-bottom: 30px;">Создаватель склад-расклада :D</p>
                 <div style="width: 100%;">
                     <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.startNewWithCheck()">✨ Новый СкладРасклад</button>
                     <button class="btn btn-secondary" id="draftBtn" onclick="app.handleDraftClick()">📂 Продолжить черновик</button>
                 </div>
-                <div style="color: var(--text-tertiary); font-size: 11px; margin-top: 50px; line-height: 1.6; text-wrap: balance;">
+                <div class="footer-phrase">
                     Первая в истории конторы приблуда для упрощения еженедельной рутины.<br>Навайбкодил с любовью ❤️
                 </div>
             </div>
@@ -190,7 +186,7 @@
 
         <section id="historyScreen" class="screen">
             <div id="historyList"></div>
-            <button class="btn btn-danger" style="margin: 20px 0;" onclick="app.openSheet('historyClearSheet')">Очистить историю</button>
+            <button class="btn btn-danger" style="margin: 20px 0;" onclick="app.openSheet('historyClearSheet')">Очистить всю историю</button>
         </section>
     </main>
 
@@ -200,7 +196,7 @@
     </nav>
 </div>
 
-<!-- Модальные окна (Шторки) -->
+<!-- Шторки -->
 <div class="sheet-overlay" id="themeSheet" onclick="app.closeSheets()">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
@@ -217,7 +213,7 @@
         <h3 style="margin-bottom: 10px; font-weight: 800; text-align: left;">Внимание!</h3>
         <p id="confirmMsg" style="color: var(--text-secondary); margin-bottom: 25px; text-align: left;"></p>
         <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.confirmStartNew()">Да, начать заново</button>
-        <button class="btn btn-secondary" onclick="app.closeSheets()">Отмена</button>
+        <button class="btn btn-secondary" onclick="app.closeSheets()">Нет, оставить</button>
     </div>
 </div>
 
@@ -225,10 +221,10 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Готовый СкладРасклад</h3>
-        <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="reportText" class="tg-bubble"></div></div>
-        <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить изменения</button>
-        <button id="mainShareBtn" class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
-        <button id="mainCopyBtn" class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
+        <div class="tg-container"><div id="reportText" class="tg-bubble"></div></div>
+        <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить</button>
+        <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
+        <button class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
     </div>
 </div>
 
@@ -236,7 +232,7 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 id="histSheetDate" style="margin-bottom: 15px; font-weight: 800; text-align: left;"></h3>
-        <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="histSheetText" class="tg-bubble"></div></div>
+        <div class="tg-container"><div id="histSheetText" class="tg-bubble"></div></div>
         <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareFromHistory()">Поделиться</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.copyFromHistory()">Копировать</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.editFromHistory()">Редактировать</button>
@@ -248,7 +244,8 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Удалить запись?</h3>
-        <button class="btn btn-danger" style="margin-bottom: 12px; background:var(--danger); color:white;" onclick="app.deleteFromHistory()">Да, удалить</button>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; text-align: left;">Этот СкладРасклад будет безвозвратно удален.</p>
+        <button class="btn btn-danger-fill" style="margin-bottom: 12px;" onclick="app.deleteFromHistory()">Да, удалить</button>
         <button class="btn btn-secondary" onclick="app.openSheet('historyActionSheet')">Отмена</button>
     </div>
 </div>
@@ -256,8 +253,9 @@
 <div class="sheet-overlay" id="resetConfirmSheet" onclick="app.closeSheets()">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
-        <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Очистить черновик?</h3>
-        <button class="btn btn-danger" style="margin-bottom: 12px; background:var(--danger); color:white;" onclick="app.resetEditor()">Да, всё удалить</button>
+        <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Очистить СкладРасклад?</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; text-align: left;">Все введённые данные будут безвозвратно удалены. Продолжить?</p>
+        <button class="btn btn-danger-fill" style="margin-bottom: 12px;" onclick="app.resetEditor()">Да, очистить всё</button>
         <button class="btn btn-secondary" onclick="app.closeSheets()">Отмена</button>
     </div>
 </div>
@@ -265,8 +263,9 @@
 <div class="sheet-overlay" id="historyClearSheet" onclick="app.closeSheets()">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
-        <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Очистить всю историю?</h3>
-        <button class="btn btn-danger" style="margin-bottom: 12px; background:var(--danger); color:white;" onclick="app.clearHistory()">Удалить всё навсегда</button>
+        <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Удалить всю историю?</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; text-align: left;">Все старые СкладРасклады будут удалены навсегда.</p>
+        <button class="btn btn-danger-fill" style="margin-bottom: 12px;" onclick="app.clearHistory()">Да, удалить историю</button>
         <button class="btn btn-secondary" onclick="app.closeSheets()">Отмена</button>
     </div>
 </div>
@@ -306,8 +305,8 @@ const app = {
     state: {
         stock: JSON.parse(localStorage.getItem('sklad_grouped')) || {},
         history: JSON.parse(localStorage.getItem('sklad_history')) || [],
-        curModel: "X", curMem: "64", activeTab: 'home', editContext: 'new', selectedHistoryId: null,
-        emptyClicks: 0, toastTimer: null, ptrStart: 0
+        curModel: "X", curMem: "64", editContext: 'new', selectedHistoryId: null,
+        emptyClicks: 0, ptrStart: 0
     },
 
     init() {
@@ -319,20 +318,19 @@ const app = {
         app.initPTR();
         app.renderHistory();
         app.updateDraftBtnUI();
-        app.navTo('home', false);
         app.registerSW();
     },
 
     initPTR() {
-        const content = document.querySelector('.main-content');
+        const content = document.getElementById('scrollContent');
         content.addEventListener('touchstart', e => { if (content.scrollTop === 0) app.state.ptrStart = e.touches[0].pageY; }, {passive: true});
         content.addEventListener('touchmove', e => {
             const y = e.touches[0].pageY;
-            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 85) {
+            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 95) {
                 if (!app.state.isRefreshing) {
                     app.state.isRefreshing = true;
-                    app.toast("Обновление...");
-                    setTimeout(() => location.reload(), 800);
+                    app.toast("Загружена новая версия! Обновляемся...");
+                    setTimeout(() => location.reload(), 1500);
                 }
             }
         }, {passive: true});
@@ -377,8 +375,8 @@ const app = {
         const hasData = Object.values(app.state.stock).some(m => Object.values(m).some(mem => Object.values(mem).some(v => v > 0)));
         if (hasData) {
             const msg = (app.state.editContext === 'history') 
-                ? "Есть данные из истории. Если создать новый, правки не сохранятся. Продолжить?"
-                : "Есть незавершенный отчет. Удалить его и начать новый?";
+                ? "Есть СкладРасклад из истории. Если создадим новый, правки в старом не сохранятся. Продолжить?"
+                : "Есть незавершенный СкладРасклад. Если создадим новый, черновик будет удалён. Продолжить?";
             document.getElementById('confirmMsg').innerText = msg;
             app.openSheet('confirmSheet');
         } else { app.confirmStartNew(); }
@@ -412,8 +410,14 @@ const app = {
     setModel(name) {
         app.state.curModel = name; 
         app.state.curMem = app.models.find(m => m.name === name).mem[0];
-        document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.dataset.name === name));
+        document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-name') === name));
         app.triggerAnim('model');
+    },
+
+    setMem(m) { 
+        app.state.curMem = m; 
+        document.querySelectorAll('.mem-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-mem') === m));
+        app.triggerAnim('memory'); 
     },
 
     triggerAnim(type) {
@@ -436,11 +440,8 @@ const app = {
         const model = app.models.find(m => m.name === app.state.curModel);
         const nameEl = document.getElementById('curModelName');
         nameEl.innerText = `iPhone ${model.name}`;
-        
         const memContainer = document.getElementById('memGroup');
         memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join('');
-        
-        // Маятник (расчет дистанции)
         nameEl.classList.remove('marquee-active');
         nameEl.style.transform = 'translateX(0)';
         setTimeout(() => {
@@ -468,17 +469,11 @@ const app = {
                 </div>
                 <div class="counter-box">
                     <button class="c-btn" onclick="app.changeCount('${c}', -1)">−</button>
-                    <input type="number" class="c-input" value="${val}" onchange="app.setCount('${c}', this.value)">
+                    <input type="number" inputmode="numeric" class="c-input" value="${val}" onfocus="this.select()" oninput="app.setCount('${c}', this.value)">
                     <button class="c-btn" onclick="app.changeCount('${c}', 1)">+</button>
                 </div>
             </div>`;
         }).join('');
-    },
-
-    setMem(m) { 
-        app.state.curMem = m;
-        document.querySelectorAll('.mem-chip').forEach(el => el.classList.toggle('active', el.dataset.mem === m));
-        app.triggerAnim('memory'); 
     },
 
     changeCount(col, delta) {
@@ -529,7 +524,7 @@ const app = {
                     if(d) {
                         const p = [];
                         m.col.forEach(c => { if(d[c] > 0) p.push(`${d[c]}${c}`); });
-                        if(p.length) res += `${m.name} ${mem.replace('GB','').replace('TB','')} - ${p.join(' ')}\n`;
+                        if(p.length) res += `${m.name} ${mem.replace(' ','')} - ${p.join(' ')}\n`;
                     }
                 });
             }
@@ -560,7 +555,7 @@ const app = {
         app.state.history.unshift({ id: Date.now(), date: dateStr, content: text, stock: JSON.parse(JSON.stringify(app.state.stock)) });
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
         app.state.stock = {}; app.save(); app.renderHistory(); app.closeSheets();
-        app.toast(method === 'share' ? "Отправлено!" : "Скопировано!"); app.navTo('home');
+        app.toast(method === 'share' ? "Отправлено и сохранено!" : "Скопировано и сохранено!"); app.navTo('home');
     },
 
     renderHistory() {
@@ -571,6 +566,7 @@ const app = {
 
     openHistoryItem(id) {
         const item = app.state.history.find(h => h.id == id);
+        if(!item) return;
         document.getElementById('histSheetDate').innerText = item.date;
         document.getElementById('histSheetText').innerText = item.content;
         app.state.selectedHistoryId = id; app.openSheet('historyActionSheet');
@@ -578,18 +574,20 @@ const app = {
 
     async shareFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if (navigator.share) { try { await navigator.share({ text: item.content }); } catch (e) {} }
+        if (navigator.share && item) { try { await navigator.share({ text: item.content }); } catch (e) {} }
     },
 
     async copyFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        const ok = await app.copy(item.content); if(ok) app.toast("Скопировано!");
+        if(item) { const ok = await app.copy(item.content); if(ok) app.toast("Скопировано!"); }
     },
 
     editFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); 
-        app.closeSheets(); app.navTo('home', false); app.openEditor('history');
+        if(item) {
+            app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); 
+            app.closeSheets(); app.navTo('home', false); app.openEditor('history');
+        }
     },
 
     deleteFromHistory() {
@@ -606,7 +604,8 @@ const app = {
 
     openSheet(id) { 
         document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active'));
-        setTimeout(() => { document.getElementById(id).classList.add('active'); }, 10);
+        const el = document.getElementById(id);
+        if(el) setTimeout(() => el.classList.add('active'), 10);
     },
     closeSheets() { document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active')); },
     
@@ -614,12 +613,13 @@ const app = {
         localStorage.setItem('theme', m);
         const dark = m === 'dark' || (m === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.body.classList.toggle('dark', dark);
-        
-        // Синхронизация статус-бара
-        const statusColor = dark ? '#1c1c1e' : '#f2f2f7';
-        document.getElementById('themeColorMeta').setAttribute('content', statusColor);
-        
-        document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️';
+        const statusColor = dark ? '#000000' : '#f2f2f7';
+        const meta = document.getElementById('themeColorMeta');
+        if(meta) meta.setAttribute('content', statusColor);
+        const container = document.getElementById('appContainer');
+        if(container) container.style.background = statusColor;
+        const icon = document.getElementById('themeIconMain');
+        if(icon) icon.innerText = dark ? '🌙' : '☀️';
         document.querySelectorAll('.theme-item').forEach(el => el.classList.remove('active'));
         const activeItem = document.getElementById('t-' + m); if(activeItem) activeItem.classList.add('active');
         if(close) app.closeSheets();
@@ -634,10 +634,10 @@ const app = {
 
     toast(m) { 
         const t = document.getElementById('toast'); 
-        clearTimeout(app.state.toastTimer);
+        if(!t) return;
         t.innerText = m; t.classList.add('active');
         if (window.navigator.vibrate) window.navigator.vibrate(30);
-        app.state.toastTimer = setTimeout(() => t.classList.remove('active'), 3500); 
+        setTimeout(() => t.classList.remove('active'), 3500); 
     },
 
     registerSW() {
@@ -647,7 +647,7 @@ const app = {
                     const nw = reg.installing;
                     nw.addEventListener('statechange', () => {
                         if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                            app.toast("Новая версия загружена!");
+                            app.toast("Загружена новая версия! Обновляемся...");
                             setTimeout(() => window.location.reload(), 1500);
                         }
                     });
@@ -656,7 +656,7 @@ const app = {
         }
     }
 };
-window.onload = () => app.init();
+window.addEventListener('load', () => app.init());
 </script>
 </body>
 </html>
