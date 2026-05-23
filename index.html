@@ -17,6 +17,7 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         :root {
             --bg-page: #f2f2f7; --surface: #ffffff; --surface-2: #e3e3e8;
             --text-primary: #000000; --text-secondary: #636366; --text-tertiary: #aeaeb2;
@@ -24,6 +25,7 @@
             --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-bg: #effdde; --tg-text: #000000;
         }
+
         .dark {
             --bg-page: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e;
             --text-primary: #ffffff; --text-secondary: #8e8e93; --text-tertiary: #48484a;
@@ -39,10 +41,10 @@
         .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
-        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; }
+        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; text-align: left; }
         .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; }
 
-        .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; }
+        .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; cursor: pointer; }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
         .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; }
@@ -53,13 +55,15 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        /* Стандарт кнопок */
+        /* Кнопки */
         .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
         .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
         .btn-danger-fill { background: var(--danger); color: white; border: none; }
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
+        
+        #installBtn { display: none; margin-top: 12px; background: var(--surface-2); color: var(--primary); border: 1px dashed var(--primary); }
 
         /* Редактор: Одна строка */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; overflow: hidden; height: 42px; }
@@ -101,12 +105,11 @@
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
-        /* Шторка тем */
         .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; color: var(--text-primary); transition: 0.2s; }
         .theme-item.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary) !important; }
 
         .tg-container { display: flex; justify-content: flex-start; margin-bottom: 25px; padding-left: 10px; }
-        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         .tg-bubble::after { content: ''; position: absolute; left: -8px; bottom: 0; width: 12px; height: 16px; background: var(--tg-bg); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
 
         .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
@@ -156,7 +159,7 @@
     <main class="main-content" id="scrollContent">
         <section id="homeScreen" class="screen active">
             <div class="centered-view">
-                <img src="./icon-256.png" style="width: 105px; height: 100px; border-radius: 24px; margin-bottom: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.12);">
+                <img src="./icon-256.png" style="width: 100px; height: 100px; border-radius: 24px; margin-bottom: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.12);">
                 <div class="card" style="border:none; background:none; padding:0;">
                     <p style="color: var(--text-secondary); font-weight: 600; font-size: 17px; margin-bottom: 30px;">Создаватель склад-расклада :D</p>
                     <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.startNewWithCheck()">✨ Новый СкладРасклад</button>
@@ -224,7 +227,7 @@
         <div class="tg-container"><div id="reportText" class="tg-bubble"></div></div>
         <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить</button>
         <button id="mainShareBtn" class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
-        <button id="mainCopyBtn" class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
+        <button class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
     </div>
 </div>
 
@@ -236,7 +239,7 @@
         <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareFromHistory()">Поделиться</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.copyFromHistory()">Копировать</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.editFromHistory()">Редактировать</button>
-        <button class="btn btn-secondary" style="color:var(--danger); border-color:var(--danger);" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
+        <button class="btn btn-danger" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
     </div>
 </div>
 
@@ -318,7 +321,7 @@ const app = {
     state: {
         stock: JSON.parse(localStorage.getItem('sklad_grouped')) || {},
         history: JSON.parse(localStorage.getItem('sklad_history')) || [],
-        curModel: "X", curMem: "64", editContext: 'new', selectedHistoryId: null,
+        curModel: "X", curMem: "64", activeTab: 'home', editContext: 'new', selectedHistoryId: null,
         emptyClicks: 0, ptrStart: 0, deferredPrompt: null, toastTimer: null
     },
 
@@ -354,19 +357,18 @@ const app = {
         content.addEventListener('touchstart', e => { if (content.scrollTop === 0) app.state.ptrStart = e.touches[0].pageY; }, {passive: true});
         content.addEventListener('touchmove', e => {
             const y = e.touches[0].pageY;
-            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 105) {
+            if (app.state.activeTab === 'home' && content.scrollTop === 0 && (y - app.state.ptrStart) > 105) {
                 if (!app.state.isRefreshing) { app.state.isRefreshing = true; app.toast("Обновление..."); setTimeout(() => location.reload(), 1000); }
             }
         }, {passive: true});
     },
 
     navTo(tab, push = true) {
-        if (push) history.pushState({ tab, view: 'main' }, '', '');
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        const btn = document.getElementById('tab-' + tab); if (btn) btn.classList.add('active');
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(tab + 'Screen').classList.add('active');
-        document.getElementById('globalBackBtn').classList.toggle('visible', false);
+        if (push) history.pushState({ view: 'main', tab }, '', '');
+        app.state.activeTab = tab;
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + tab));
+        document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === tab + 'Screen'));
+        document.getElementById('globalBackBtn').classList.remove('visible');
         document.getElementById('headerStatus').style.display = 'none';
         document.getElementById('headerTitle').innerText = (tab === 'history') ? 'История' : 'СкладРасклад';
         app.updateDraftBtnUI(); app.showInstallBtn(); if(tab === 'history') app.renderHistory();
@@ -374,7 +376,7 @@ const app = {
 
     openEditor(context) {
         app.state.editContext = context;
-        if (history.state?.view !== 'editor') { history.pushState({ tab: 'home', view: 'editor' }, '', ''); }
+        if (history.state?.view !== 'editor') { history.pushState({ view: 'editor', tab: 'home' }, '', ''); }
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('editorScreen').classList.add('active');
         document.getElementById('globalBackBtn').classList.add('visible');
@@ -403,9 +405,12 @@ const app = {
         } else { app.confirmStartNew(); }
     },
 
-    confirmStartNew() { app.state.stock = {}; app.state.editContext = 'new'; app.save(); app.closeSheets(); app.openEditor('new'); },
+    confirmStartNew() { app.state.stock = {}; app.state.editContext = 'new'; app.save(); app.closeSheets(true); setTimeout(() => app.openEditor('new'), 150); },
     goBack() { history.back(); },
+    
     handlePopState(e) {
+        const activeSheet = document.querySelector('.sheet-overlay.active');
+        if (activeSheet) { app.closeSheets(false); return; }
         const s = e.state; if (!s) { app.navTo('home', false); return; }
         if (s.view === 'editor') app.openEditor(app.state.editContext);
         else app.navTo(s.tab, false);
@@ -501,7 +506,7 @@ const app = {
         return map[emoji] || "";
     },
 
-    resetEditor() { app.state.stock = {}; app.save(); app.closeSheets(); app.renderGroupsUI(); app.triggerAnim('model'); app.updateDraftBtnUI(); },
+    resetEditor() { app.state.stock = {}; app.save(); app.closeSheets(true); app.renderGroupsUI(); app.triggerAnim('model'); app.updateDraftBtnUI(); },
 
     finish() {
         const t = app.gen(); if(!t) return app.toast("СкладРасклад пуст");
@@ -543,7 +548,7 @@ const app = {
         if (entry) {
             entry.content = t; entry.stock = JSON.parse(JSON.stringify(app.state.stock));
             localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
-            app.state.stock = {}; app.save(); app.closeSheets(); app.toast("Сохранено!"); app.renderHistory(); app.navTo('home');
+            app.state.stock = {}; app.save(); app.closeSheets(true); app.toast("Сохранено!"); app.renderHistory(); app.navTo('home');
         }
     },
 
@@ -559,7 +564,7 @@ const app = {
         }
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
         app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null;
-        app.save(); app.renderHistory(); app.closeSheets();
+        app.save(); app.renderHistory(); app.closeSheets(true);
         const phrases = { 'share': "Отправлено и сохранено!", 'copy': "Скопировано и сохранено!" };
         app.toast(phrases[method] || "Сохранено!"); app.navTo('home');
     },
@@ -585,30 +590,51 @@ const app = {
     async shareFromHistory() { 
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); 
         if (navigator.share && item) { try { navigator.share({ text: item.content }).catch(()=>{}); } catch (e) {} }
-        app.closeSheets(); app.toast("Отправлено!");
+        app.closeSheets(true); app.toast("Отправлено!");
     },
 
     async copyFromHistory() { 
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); 
-        if(item) { const ok = await app.copy(item.content); if(ok) { app.closeSheets(); app.toast("Скопировано!"); } } 
+        if(item) { const ok = await app.copy(item.content); if(ok) { app.closeSheets(true); app.toast("Скопировано!"); } } 
     },
 
     editFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if(item) { app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); app.closeSheets(); app.navTo('home', false); app.openEditor('history'); }
+        if(item) { 
+            app.state.stock = JSON.parse(JSON.stringify(item.stock)); 
+            app.save(); 
+            app.closeSheets(true); 
+            setTimeout(() => {
+                app.navTo('home', false);
+                app.openEditor('history');
+            }, 200);
+        }
     },
 
     deleteFromHistory() {
         if (app.state.editContext === 'history' && app.state.selectedHistoryId) { app.state.stock = {}; app.save(); app.state.editContext = 'new'; }
         app.state.history = app.state.history.filter(h => h.id != app.state.selectedHistoryId);
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
-        app.renderHistory(); app.closeSheets(); app.toast("Удалено");
+        app.renderHistory(); app.closeSheets(true); app.toast("Удалено");
     },
 
-    clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(); app.toast("История очищена"); },
+    clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(true); app.toast("История очищена"); },
 
-    openSheet(id) { document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active')); const el = document.getElementById(id); if(el) setTimeout(() => el.classList.add('active'), 10); },
-    closeSheets() { document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active')); },
+    openSheet(id) { 
+        const el = document.getElementById(id);
+        if(el) {
+            history.pushState({ view: 'sheet', tab: app.state.activeTab, sheetId: id }, '', '');
+            el.classList.add('active');
+        }
+    },
+    
+    closeSheets(back = true) { 
+        const active = document.querySelector('.sheet-overlay.active');
+        if(active) {
+            active.classList.remove('active');
+            if(back && history.state?.view === 'sheet') history.back();
+        }
+    },
     
     setTheme(m, close=true) {
         localStorage.setItem('theme', m);
@@ -618,7 +644,7 @@ const app = {
         document.getElementById('themeColorMeta').setAttribute('content', statusColor);
         document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️';
         document.querySelectorAll('.theme-item').forEach(el => el.classList.toggle('active', el.id === 't-' + m || el.innerText.toLowerCase().includes(m)));
-        if(close) app.closeSheets();
+        if(close) app.closeSheets(true);
     },
 
     async copy(text) { 
