@@ -1,5 +1,5 @@
 // --- ФАЙЛ sw.js ---
-const CACHE_NAME = 'skladrasklad-v15'; // МЕНЯЙ ЭТУ ЦИФРУ ДЛЯ ОБНОВЛЕНИЯ
+const CACHE_NAME = 'skladrasklad-v1'; // МЕНЯЙ ЭТУ ЦИФРУ ДЛЯ ОБНОВЛЕНИЯ
 
 const assets = [
   './',
