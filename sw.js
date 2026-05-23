@@ -1,5 +1,4 @@
-// --- ФАЙЛ sw.js (v4) ---
-const CACHE_NAME = 'skladrasklad-v4';
+const CACHE_NAME = 'skladrasklad-v5';
 
 const assets = [
   './',
