@@ -17,7 +17,6 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         :root {
             --bg-page: #f2f2f7; --surface: #ffffff; --surface-2: #e3e3e8;
             --text-primary: #000000; --text-secondary: #636366; --text-tertiary: #aeaeb2;
@@ -25,7 +24,6 @@
             --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-bg: #effdde; --tg-text: #000000;
         }
-
         .dark {
             --bg-page: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e;
             --text-primary: #ffffff; --text-secondary: #8e8e93; --text-tertiary: #48484a;
@@ -41,7 +39,7 @@
         .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
-        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; text-align: left; }
+        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; }
         .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; }
 
         .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; }
@@ -55,15 +53,13 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        /* Кнопки - СТАНДАРТ */
+        /* Стандарт кнопок */
         .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
         .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
         .btn-danger-fill { background: var(--danger); color: white; border: none; }
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
-        
-        #installBtn { display: none; margin-top: 12px; background: var(--surface-2); color: var(--primary); border: 1px dashed var(--primary); }
 
         /* Редактор: Одна строка */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; overflow: hidden; height: 42px; }
@@ -72,6 +68,7 @@
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
         @keyframes marqueeBounce { 0%, 20% { transform: translateX(0); } 80%, 100% { transform: translateX(var(--move-dist)); } }
 
+        /* Чипсы памяти */
         .mem-chips-wrap { display: flex; gap: 2px; background: var(--surface-2); padding: 3px; border-radius: 12px; border: 0.5px solid var(--border); flex-shrink: 0; }
         .mem-chip { padding: 6px 10px; border-radius: 9px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; }
         .mem-chip.active { background: var(--surface) !important; color: var(--primary) !important; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transform: scale(1.03); }
@@ -81,7 +78,7 @@
         .group-chip.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary); }
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: #34c759; border-radius: 50%; }
 
-        /* Счётчики - GRID */
+        /* Счётчики Grid */
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -164,7 +161,7 @@
                     <p style="color: var(--text-secondary); font-weight: 600; font-size: 17px; margin-bottom: 30px;">Создаватель склад-расклада :D</p>
                     <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.startNewWithCheck()">✨ Новый СкладРасклад</button>
                     <button class="btn btn-secondary" id="draftBtn" onclick="app.handleDraftClick()">📂 Продолжить черновик</button>
-                    <button class="btn" id="installBtn" onclick="app.installFlow()">📲 Установить на главный экран</button>
+                    <button class="btn" id="installBtn" style="display:none; margin-top:12px; background:var(--surface-2); color:var(--primary); border:1px dashed var(--primary);" onclick="app.installFlow()">📲 Установить на главный экран</button>
                 </div>
                 <div class="footer-phrase">
                     Первая в истории конторы приблуда для упрощения еженедельной рутины.<br>Навайбкодил с любовью ❤️
@@ -227,7 +224,7 @@
         <div class="tg-container"><div id="reportText" class="tg-bubble"></div></div>
         <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить</button>
         <button id="mainShareBtn" class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
-        <button class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
+        <button id="mainCopyBtn" class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
     </div>
 </div>
 
@@ -239,7 +236,7 @@
         <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareFromHistory()">Поделиться</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.copyFromHistory()">Копировать</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.editFromHistory()">Редактировать</button>
-        <button class="btn btn-danger" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
+        <button class="btn btn-secondary" style="color:var(--danger); border-color:var(--danger);" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
     </div>
 </div>
 
@@ -277,7 +274,6 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Как установить на iPhone</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; text-align: left;">Чтобы СкладРасклад всегда был под рукой:</p>
         <ol style="color: var(--text-primary); margin-left: 20px; margin-bottom: 25px; line-height: 2; text-align: left; font-weight: 600;">
             <li>Нажми на иконку «Поделиться» <span>⎋</span></li>
             <li>Выбери «На экран „Домой“»</li>
@@ -536,8 +532,8 @@ const app = {
 
     async shareCurrent() { 
         const t = app.gen(); 
-        if (navigator.share) { try { await navigator.share({ text: t }); } catch (e) {} }
-        app.finalizeReport(t, 'share'); 
+        if (navigator.share) { try { navigator.share({ text: t }).catch(()=>{}); } catch (e) {} }
+        setTimeout(() => app.finalizeReport(t, 'share'), 100); 
     },
     
     async copyAndSave() { const t = app.gen(); const ok = await app.copy(t); if(ok) app.finalizeReport(t, 'copy'); },
@@ -565,7 +561,7 @@ const app = {
         app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null;
         app.save(); app.renderHistory(); app.closeSheets();
         const phrases = { 'share': "Отправлено и сохранено!", 'copy': "Скопировано и сохранено!" };
-        app.toast(phrases[method]); app.navTo('home');
+        app.toast(phrases[method] || "Сохранено!"); app.navTo('home');
     },
 
     renderHistory() {
@@ -588,7 +584,7 @@ const app = {
 
     async shareFromHistory() { 
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); 
-        if (navigator.share && item) { try { await navigator.share({ text: item.content }); } catch (e) {} }
+        if (navigator.share && item) { try { navigator.share({ text: item.content }).catch(()=>{}); } catch (e) {} }
         app.closeSheets(); app.toast("Отправлено!");
     },
 
@@ -621,7 +617,7 @@ const app = {
         const statusColor = dark ? '#000000' : '#f2f2f7';
         document.getElementById('themeColorMeta').setAttribute('content', statusColor);
         document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️';
-        document.querySelectorAll('.theme-item').forEach(el => el.classList.toggle('active', el.id === 't-' + m));
+        document.querySelectorAll('.theme-item').forEach(el => el.classList.toggle('active', el.id === 't-' + m || el.innerText.toLowerCase().includes(m)));
         if(close) app.closeSheets();
     },
 
@@ -641,7 +637,21 @@ const app = {
         app.state.toastTimer = setTimeout(() => t.classList.remove('active'), 3500); 
     },
 
-    registerSW() { if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(() => {}); } }
+    registerSW() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const nw = reg.installing;
+                    nw.addEventListener('statechange', () => {
+                        if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                            app.toast("Загружена новая версия! Обновляемся...");
+                            setTimeout(() => window.location.reload(), 1500);
+                        }
+                    });
+                });
+            });
+        }
+    }
 };
 window.addEventListener('load', () => app.init());
 </script>
