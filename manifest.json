@@ -1,6 +1,6 @@
 {
   "name": "СкладРасклад",
-  "short_name": "Склад",
+  "short_name": "СкладРасклад",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f2f2f7",
