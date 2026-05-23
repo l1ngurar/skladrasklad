@@ -1,4 +1,4 @@
-const CACHE_NAME = 'skladrasklad-v2'; // ВЕРСИЯ 2
+const CACHE_NAME = 'skladrasklad-v3'; // менять версию кэша тут
 
 const assets = [
   './',
