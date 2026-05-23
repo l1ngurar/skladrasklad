@@ -1,5 +1,4 @@
-// --- ФАЙЛ sw.js ---
-const CACHE_NAME = 'skladrasklad-v2'; // МЕНЯЙ ЭТУ ЦИФРУ ДЛЯ ОБНОВЛЕНИЯ
+const CACHE_NAME = 'skladrasklad-v2'; // ВЕРСИЯ 2
 
 const assets = [
   './',
@@ -11,31 +10,20 @@ const assets = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
 ];
 
-// Установка: кешируем все файлы
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(assets))
-  );
-  self.skipWaiting(); // Принудительно активируем новый воркер сразу
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(assets)));
+  self.skipWaiting();
 });
 
-// Активация: чистим старый кеш
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
-      return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-      );
+      return Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)));
     })
   );
   self.clients.claim();
 });
 
-// Запросы: сначала кэш, потом сеть
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+  event.respondWith(caches.match(event.request).then((response) => response || fetch(event.request)));
 });

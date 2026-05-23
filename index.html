@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>СкладРасклад</title>
     
+    <!-- PWA & iOS Meta -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="СкладРасклад">
@@ -21,6 +22,7 @@
             --bg-page: #f2f2f7; --surface: #ffffff; --surface-2: #f1f3f7;
             --text-primary: #000000; --text-secondary: #636366; --text-tertiary: #aeaeb2;
             --border: #d1d1d6; --primary: #007aff; --danger: #ff3b30; --danger-bg: #ffe9e9;
+            --header-bg: #f2f2f7; /* Светлый фон iOS хедера */
             --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
             --tg-bg: #effdde; --tg-text: #000000;
         }
@@ -28,6 +30,7 @@
             --bg-page: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e;
             --text-primary: #ffffff; --text-secondary: #8e8e93; --text-tertiary: #48484a;
             --border: #38383a; --primary: #0a84ff; --danger: #ff453a; --danger-bg: #2c1514;
+            --header-bg: #1c1c1e; /* Глубокий серый для темной темы */
             --tg-bg: #2b5278; --tg-text: #ffffff;
         }
 
@@ -37,28 +40,30 @@
         .app-container { 
             max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; 
             display: flex; flex-direction: column;
+            background: var(--header-bg); /* Важно для бесшовного статус-бара */
             padding-bottom: calc(75px + var(--safe-bottom));
         }
 
+        /* Шапка */
         .app-header { 
             padding: calc(15px + var(--safe-top)) 20px 10px;
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--bg-page); z-index: 10; flex-shrink: 0; min-height: 75px;
+            background: var(--header-bg); z-index: 10; flex-shrink: 0; min-height: 75px;
+            border-bottom: 0.5px solid var(--border); /* Нативный разделитель iOS */
         }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
-        .app-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin: 0; text-align: left; }
+        .app-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin: 0; line-height: 1.2; }
         .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; }
 
         .back-btn { 
-            width: 0; opacity: 0; overflow: hidden;
-            font-size: 24px; background: none; border: none; color: var(--text-primary); 
-            cursor: pointer; display: flex; align-items: center;
+            width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); 
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin-right 0.3s ease;
         }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
-        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px; position: relative; }
+        /* Экраны */
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px; position: relative; background: var(--bg-page); }
         .screen { display: none; opacity: 0; width: 100%; }
         .screen.active { display: block; animation: screenIn 0.3s ease forwards; }
         @keyframes screenIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -71,87 +76,68 @@
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
         .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(255,59,48,0.15); }
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
-        .btn:active:not(.btn-draft-empty) { transform: scale(0.97); opacity: 0.8; }
 
-        /* Редактор */
+        /* Маятник названия модели */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; overflow: hidden; }
         .model-name-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
         .model-name-text { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; display: inline-block; }
-        
-        /* Исправленный маятник */
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
         @keyframes marqueeBounce { 
-            0%, 15% { transform: translateX(0); } 
-            85%, 100% { transform: translateX(var(--move-dist, -20px)); } 
+            0%, 20% { transform: translateX(0); } 
+            80%, 100% { transform: translateX(var(--move-dist)); } 
         }
 
+        /* Чипсы памяти (Плавная смена состояний) */
         .mem-chips-wrap { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 14px; border: 0.5px solid var(--border); }
         .mem-chip { 
             padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; 
             background: transparent; color: var(--text-secondary); border: none; cursor: pointer;
-            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease, transform 0.2s ease;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease, transform 0.2s ease, box-shadow 0.4s ease;
         }
         .mem-chip.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: scale(1.05); }
 
         .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 5px 16px 15px; margin: 0 -16px; scrollbar-width: none; }
-        .group-chip { 
-            background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; 
-            font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); 
-            position: relative; transition: all 0.3s ease; 
-        }
+        .group-chip { background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); position: relative; transition: all 0.3s ease; }
         .group-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: #34c759; border-radius: 50%; }
 
-        /* Анимации */
-        .card-jump-anim { animation: cardJump 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.1); }
-        @keyframes cardJump { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .list-pop-anim { animation: listPop 0.3s ease-out; }
-        @keyframes listPop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Счётчики - GRID ЦЕНТРОВКА */
+        /* Счётчики (Grid Центровка) */
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .c-input { 
-            width: 100%; text-align: center; border: none; background: transparent; 
-            font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; 
-            display: grid; place-items: center;
-        }
+        .c-input { width: 100%; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; }
 
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; right: 0; 
-            background: rgba(255,255,255,0.85); backdrop-filter: saturate(180%) blur(20px);
-            border-top: 0.5px solid var(--border); display: flex; justify-content: space-around;
-            padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100;
-        }
+        /* Нижний бар */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
         body.dark .bottom-nav { background: rgba(28,28,30,0.85); }
-        .nav-tab { background: none; border: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; }
+        .nav-tab { background: none; border: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; transition: color 0.3s; }
         .nav-tab.active { color: var(--primary); }
         .nav-tab span { font-size: 24px; }
 
+        /* Шторки */
         .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; align-items: flex-end; }
         .sheet-overlay.active { opacity: 1; visibility: visible; }
         .sheet { background: var(--bg-page); width: 100%; border-radius: 24px 24px 0 0; padding: 20px 20px calc(24px + var(--safe-bottom)); transform: translateY(100%); transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 92dvh; overflow-y: auto; }
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
-        .tg-container { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 90%; text-align: left; white-space: pre-wrap; position: relative; }
-
-        .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 90%; text-align: left; white-space: pre-wrap; position: relative; font-family: -apple-system, sans-serif; }
+        .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; }
         .h-date { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-align: left; }
         .h-text { font-size: 15px; color: var(--text-primary); text-align: left; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-        .toast { 
-            position: fixed; bottom: calc(110px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); 
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; 
-            z-index: 2000; opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .toast { position: fixed; bottom: calc(110px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast.active { opacity: 1; transform: translateX(-50%) scale(1); visibility: visible; }
         body.dark .toast { background: var(--primary); }
 
-        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); }
+        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; }
         .theme-item.active { border-color: var(--primary); background: var(--primary); color: white; }
+
+        /* Анимации карточек */
+        .card-jump-anim { animation: cardJump 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.1); }
+        @keyframes cardJump { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .list-pop-anim { animation: listPop 0.3s ease-out; }
+        @keyframes listPop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -175,7 +161,7 @@
     <main class="main-content">
         <section id="homeScreen" class="screen active">
             <div class="centered-view">
-                <img src="./icon-256.png" style="width: 100px; height: 100px; border-radius: 22px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                <img src="./icon-256.png" style="width: 100px; height: 100px; border-radius: 22px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.12);">
                 <p style="color: var(--text-secondary); font-weight: 600; margin-bottom: 30px;">Создаватель склад-расклада :D</p>
                 <div style="width: 100%;">
                     <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.startNewWithCheck()">✨ Новый СкладРасклад</button>
@@ -214,7 +200,7 @@
     </nav>
 </div>
 
-<!-- Шторки (упрощенно для краткости, структура та же) -->
+<!-- Модальные окна (Шторки) -->
 <div class="sheet-overlay" id="themeSheet" onclick="app.closeSheets()">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
@@ -239,7 +225,7 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Готовый СкладРасклад</h3>
-        <div class="tg-container"><div id="reportText" class="tg-bubble"></div></div>
+        <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="reportText" class="tg-bubble"></div></div>
         <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить изменения</button>
         <button id="mainShareBtn" class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
         <button id="mainCopyBtn" class="btn btn-secondary" onclick="app.copyAndSave()">Копировать</button>
@@ -250,7 +236,7 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 id="histSheetDate" style="margin-bottom: 15px; font-weight: 800; text-align: left;"></h3>
-        <div class="tg-container"><div id="histSheetText" class="tg-bubble"></div></div>
+        <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="histSheetText" class="tg-bubble"></div></div>
         <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareFromHistory()">Поделиться</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.copyFromHistory()">Копировать</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.editFromHistory()">Редактировать</button>
@@ -262,8 +248,8 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 15px; font-weight: 800; text-align: left;">Удалить запись?</h3>
-        <button class="btn btn-danger" style="margin-bottom:12px; background:var(--danger); color:white;" onclick="app.deleteFromHistory()">Да, удалить</button>
-        <button class="btn btn-secondary" onclick="app.closeSheets()">Отмена</button>
+        <button class="btn btn-danger" style="margin-bottom: 12px; background:var(--danger); color:white;" onclick="app.deleteFromHistory()">Да, удалить</button>
+        <button class="btn btn-secondary" onclick="app.openSheet('historyActionSheet')">Отмена</button>
     </div>
 </div>
 
@@ -326,17 +312,11 @@ const app = {
 
     init() {
         app.setTheme(localStorage.getItem('theme') || 'system', false);
-        
-        // Живое слежение за системной темой
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
             if (localStorage.getItem('theme') === 'system') app.setTheme('system', false);
         });
-
         window.addEventListener('popstate', (e) => app.handlePopState(e));
-        
-        // Pull to refresh
         app.initPTR();
-        
         app.renderHistory();
         app.updateDraftBtnUI();
         app.navTo('home', false);
@@ -348,7 +328,7 @@ const app = {
         content.addEventListener('touchstart', e => { if (content.scrollTop === 0) app.state.ptrStart = e.touches[0].pageY; }, {passive: true});
         content.addEventListener('touchmove', e => {
             const y = e.touches[0].pageY;
-            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 80) {
+            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 85) {
                 if (!app.state.isRefreshing) {
                     app.state.isRefreshing = true;
                     app.toast("Обновление...");
@@ -397,8 +377,8 @@ const app = {
         const hasData = Object.values(app.state.stock).some(m => Object.values(m).some(mem => Object.values(mem).some(v => v > 0)));
         if (hasData) {
             const msg = (app.state.editContext === 'history') 
-                ? "Есть СкладРасклад из истории. Если создадим новый, правки в старом не сохранятся. Продолжить?"
-                : "Есть незавершенный СкладРасклад. Если создадим новый, черновик будет удалён. Продолжить?";
+                ? "Есть данные из истории. Если создать новый, правки не сохранятся. Продолжить?"
+                : "Есть незавершенный отчет. Удалить его и начать новый?";
             document.getElementById('confirmMsg').innerText = msg;
             app.openSheet('confirmSheet');
         } else { app.confirmStartNew(); }
@@ -418,9 +398,7 @@ const app = {
         if (hasData) { 
             btn.classList.remove('btn-draft-empty'); 
             btn.innerHTML = (app.state.editContext === 'history') ? "📜 Продолжить правку" : "📂 Продолжить черновик";
-        } else { 
-            btn.classList.add('btn-draft-empty'); btn.innerText = "Нет черновика"; 
-        }
+        } else { btn.classList.add('btn-draft-empty'); btn.innerText = "Нет черновика"; }
     },
 
     renderGroupsUI() {
@@ -459,11 +437,10 @@ const app = {
         const nameEl = document.getElementById('curModelName');
         nameEl.innerText = `iPhone ${model.name}`;
         
-        // Отрисовка чипсов памяти ОДИН РАЗ при смене модели
         const memContainer = document.getElementById('memGroup');
         memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join('');
         
-        // Маятник
+        // Маятник (расчет дистанции)
         nameEl.classList.remove('marquee-active');
         nameEl.style.transform = 'translateX(0)';
         setTimeout(() => {
@@ -474,7 +451,6 @@ const app = {
                 nameEl.classList.add('marquee-active');
             }
         }, 150);
-
         app.renderColorsOnly();
     },
 
@@ -511,9 +487,7 @@ const app = {
         if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, (app.state.stock[m][mem][col] || 0) + delta);
         if (window.navigator.vibrate) window.navigator.vibrate(15);
-        app.save();
-        app.renderColorsOnly();
-        app.renderGroupsUI();
+        app.save(); app.renderColorsOnly(); app.renderGroupsUI();
     },
 
     setCount(col, val) {
@@ -521,8 +495,7 @@ const app = {
         if(!app.state.stock[m]) app.state.stock[m] = {};
         if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, parseInt(val) || 0);
-        app.save();
-        app.renderGroupsUI();
+        app.save(); app.renderGroupsUI();
     },
 
     save() { localStorage.setItem('sklad_grouped', JSON.stringify(app.state.stock)); },
@@ -566,12 +539,10 @@ const app = {
 
     async shareCurrent() {
         const text = app.gen();
-        if (navigator.share) {
-            try { await navigator.share({ text: text }); app.finalizeReport(text, 'share'); } catch (e) {}
-        }
+        if (navigator.share) { try { await navigator.share({ text: text }); app.finalizeReport(text, 'share'); } catch (e) {} }
     },
 
-    async copyAndSave() { const text = app.gen(); const ok = await app.copy(text); if(ok) { app.finalizeReport(text, 'copy'); } },
+    async copyAndSave() { const text = app.gen(); const ok = await app.copy(text); if(ok) app.finalizeReport(text, 'copy'); },
 
     saveHistoryEdit() {
         const text = app.gen();
@@ -588,8 +559,7 @@ const app = {
         const dateStr = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth()+1).toString().padStart(2, '0')}.${now.getFullYear()}, ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         app.state.history.unshift({ id: Date.now(), date: dateStr, content: text, stock: JSON.parse(JSON.stringify(app.state.stock)) });
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
-        app.state.stock = {}; app.save(); app.closeSheets();
-        app.renderHistory();
+        app.state.stock = {}; app.save(); app.renderHistory(); app.closeSheets();
         app.toast(method === 'share' ? "Отправлено!" : "Скопировано!"); app.navTo('home');
     },
 
@@ -623,10 +593,7 @@ const app = {
     },
 
     deleteFromHistory() {
-        // Если удаляем то, что в данный момент открыто как черновик из истории
-        if (app.state.editContext === 'history') {
-            app.state.stock = {}; app.save(); app.state.editContext = 'new';
-        }
+        if (app.state.editContext === 'history') { app.state.stock = {}; app.save(); app.state.editContext = 'new'; }
         app.state.history = app.state.history.filter(h => h.id != app.state.selectedHistoryId);
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
         app.renderHistory(); app.closeSheets(); app.toast("Удалено");
@@ -647,7 +614,11 @@ const app = {
         localStorage.setItem('theme', m);
         const dark = m === 'dark' || (m === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.body.classList.toggle('dark', dark);
-        document.getElementById('themeColorMeta').setAttribute('content', dark ? '#000000' : '#f2f2f7');
+        
+        // Синхронизация статус-бара
+        const statusColor = dark ? '#1c1c1e' : '#f2f2f7';
+        document.getElementById('themeColorMeta').setAttribute('content', statusColor);
+        
         document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️';
         document.querySelectorAll('.theme-item').forEach(el => el.classList.remove('active'));
         const activeItem = document.getElementById('t-' + m); if(activeItem) activeItem.classList.add('active');
@@ -676,7 +647,7 @@ const app = {
                     const nw = reg.installing;
                     nw.addEventListener('statechange', () => {
                         if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                            app.toast("Загружена новая версия!");
+                            app.toast("Новая версия загружена!");
                             setTimeout(() => window.location.reload(), 1500);
                         }
                     });
@@ -685,7 +656,6 @@ const app = {
         }
     }
 };
-
 window.onload = () => app.init();
 </script>
 </body>
