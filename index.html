@@ -17,6 +17,7 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         :root {
             --bg-page: #f2f2f7; --surface: #ffffff; --surface-2: #f1f3f7;
             --text-primary: #000000; --text-secondary: #636366; --text-tertiary: #aeaeb2;
@@ -24,26 +25,38 @@
             --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-bg: #effdde; --tg-text: #000000;
         }
-        body.dark {
+
+        /* Тёмная тема теперь через класс на html */
+        .dark {
             --bg-page: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e;
             --text-primary: #ffffff; --text-secondary: #8e8e93; --text-tertiary: #48484a;
             --border: #38383a; --primary: #0a84ff; --danger: #ff453a; --danger-bg: #2c1514;
             --tg-bg: #2b5278; --tg-text: #ffffff;
         }
 
-        html, body { height: 100%; width: 100%; background: var(--bg-page); overflow: hidden; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; color: var(--text-primary); transition: background 0.3s; }
+        html, body { height: 100%; width: 100%; background: var(--bg-page); color: var(--text-primary); transition: background 0.3s; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; overflow-x: hidden; }
 
-        .app-container { max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--bg-page); }
+        .app-container { 
+            max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; 
+            display: flex; flex-direction: column; background: var(--bg-page);
+        }
 
         /* Шапка */
-        .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; background: transparent; z-index: 10; flex-shrink: 0; }
+        .app-header { 
+            padding: calc(15px + var(--safe-top)) 20px 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: transparent; z-index: 10; flex-shrink: 0;
+        }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
         .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; text-align: left; }
         .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; }
 
-        .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin-right 0.3s ease; }
+        .back-btn { 
+            width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); 
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin-right 0.3s ease;
+        }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
         /* Контент */
@@ -55,16 +68,12 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        /* КНОПКИ - УНИФИКАЦИЯ */
+        /* Кнопки */
         .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
-        
-        /* Опасная кнопка (триггер шторки) */
         .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
-        /* Опасная кнопка (подтверждение в шторке) */
         .btn-danger-fill { background: var(--danger); color: white; border: none; }
-        
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
 
         /* Маятник */
@@ -74,31 +83,31 @@
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
         @keyframes marqueeBounce { 0%, 20% { transform: translateX(0); } 80%, 100% { transform: translateX(var(--move-dist)); } }
 
-        /* Чипсы */
+        /* Чипсы (Выделение) */
         .mem-chips-wrap { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 14px; border: 0.5px solid var(--border); }
         .mem-chip { padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; }
         .mem-chip.active { background: var(--surface) !important; color: var(--primary) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: scale(1.05); }
 
         .groups-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px 15px; margin: 0 -16px; scrollbar-width: none; }
         .group-chip { background: var(--surface); padding: 10px 18px; border-radius: 50px; white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--text-secondary); border: 1px solid var(--border); position: relative; transition: all 0.3s ease; cursor: pointer; }
-        .group-chip.active { background: var(--primary) !important; color: white !important; border-color: var(--primary); }
+        .group-chip.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary); }
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: #34c759; border-radius: 50%; }
 
-        /* Счётчики - ИДЕАЛЬНАЯ ЦЕНТРОВКА */
+        /* Счётчики */
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .c-input { 
             width: 100%; text-align: center; border: none; background: transparent; 
             font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none;
-            padding: 0; display: grid; place-items: center;
-            appearance: none; -webkit-appearance: none; -moz-appearance: textfield;
+            padding: 0; appearance: none; -webkit-appearance: none; -moz-appearance: textfield;
+            display: grid; place-items: center;
         }
         .c-input::-webkit-inner-spin-button, .c-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         /* Навигация */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
-        body.dark .bottom-nav { background: rgba(0,0,0,0.75); }
+        .dark .bottom-nav { background: rgba(0,0,0,0.75); }
         .nav-tab { background: none; border: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; }
         .nav-tab.active { color: var(--primary); }
         .nav-tab span { font-size: 24px; }
@@ -110,12 +119,17 @@
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
-        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); transition: 0.2s; cursor: pointer; color: var(--text-primary); }
+        .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; color: var(--text-primary); }
         .theme-item.active { border-color: var(--primary); background: var(--primary); color: #ffffff; }
 
         /* Пузыри Telegram */
         .tg-container { display: flex; justify-content: flex-start; margin-bottom: 25px; padding-left: 10px; }
-        .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .tg-bubble { 
+            background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; 
+            border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; 
+            max-width: 85%; text-align: left; white-space: pre-wrap; 
+            position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
         .tg-bubble::after { content: ''; position: absolute; left: -8px; bottom: 0; width: 12px; height: 16px; background: var(--tg-bg); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
 
         /* История */
@@ -126,7 +140,7 @@
 
         .toast { position: fixed; bottom: calc(100px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; }
         .toast.active { opacity: 1; transform: translateX(-50%) scale(1); visibility: visible; }
-        body.dark .toast { background: var(--primary); }
+        .dark .toast { background: var(--primary); }
 
         .card-jump-anim { animation: cardJump 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.1); }
         @keyframes cardJump { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -137,6 +151,16 @@
     </style>
 </head>
 <body>
+
+<!-- МГНОВЕННЫЙ ФИКС ТЕМЫ -->
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme') || 'system';
+        const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+        document.getElementById('themeColorMeta').setAttribute('content', dark ? '#000000' : '#f2f2f7');
+    })();
+</script>
 
 <div id="toast" class="toast"></div>
 
@@ -162,6 +186,7 @@
                 <div style="width: 100%;">
                     <button class="btn btn-primary" style="margin-bottom: 12px;" onclick="app.startNewWithCheck()">✨ Новый СкладРасклад</button>
                     <button class="btn btn-secondary" id="draftBtn" onclick="app.handleDraftClick()">📂 Продолжить черновик</button>
+                    <button class="btn" id="installBtn" style="display:none; margin-top:12px; background:var(--surface-2); color:var(--primary); border:1px dashed var(--primary);" onclick="app.installFlow()">📲 Установить на главный экран</button>
                 </div>
                 <div class="footer-phrase">
                     Первая в истории конторы приблуда для упрощения еженедельной рутины.<br>Навайбкодил с любовью ❤️
@@ -270,6 +295,20 @@
     </div>
 </div>
 
+<div class="sheet-overlay" id="iosInstallSheet" onclick="app.closeSheets()">
+    <div class="sheet" onclick="event.stopPropagation()">
+        <div class="sheet-handle"></div>
+        <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Как установить на iPhone</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; text-align: left;">Чтобы СкладРасклад всегда был под рукой:</p>
+        <ol style="color: var(--text-primary); margin-left: 20px; margin-bottom: 25px; line-height: 2; text-align: left; font-weight: 600;">
+            <li>Нажми на иконку «Поделиться» <span>⎋</span></li>
+            <li>Выбери «На экран „Домой“»</li>
+            <li>Нажми «Добавить»</li>
+        </ol>
+        <button class="btn btn-primary" onclick="app.closeSheets()">Понятно</button>
+    </div>
+</div>
+
 <script>
 const app = {
     models: [
@@ -306,7 +345,7 @@ const app = {
         stock: JSON.parse(localStorage.getItem('sklad_grouped')) || {},
         history: JSON.parse(localStorage.getItem('sklad_history')) || [],
         curModel: "X", curMem: "64", editContext: 'new', selectedHistoryId: null,
-        emptyClicks: 0, ptrStart: 0
+        emptyClicks: 0, ptrStart: 0, deferredPrompt: null
     },
 
     init() {
@@ -315,10 +354,36 @@ const app = {
             if (localStorage.getItem('theme') === 'system') app.setTheme('system', false);
         });
         window.addEventListener('popstate', (e) => app.handlePopState(e));
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); app.state.deferredPrompt = e; app.showInstallBtn();
+        });
+
         app.initPTR();
         app.renderHistory();
         app.updateDraftBtnUI();
+        app.showInstallBtn();
         app.registerSW();
+    },
+
+    showInstallBtn() {
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        const btn = document.getElementById('installBtn');
+        if (!btn) return;
+        if (isStandalone) { btn.style.display = 'none'; return; }
+        const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isiOS || app.state.deferredPrompt) { btn.style.display = 'flex'; }
+    },
+
+    async installFlow() {
+        const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isiOS) { app.openSheet('iosInstallSheet'); } 
+        else if (app.state.deferredPrompt) {
+            app.state.deferredPrompt.prompt();
+            const { outcome } = await app.state.deferredPrompt.userChoice;
+            if (outcome === 'accepted') { app.toast("Установка началась!"); document.getElementById('installBtn').style.display = 'none'; }
+            app.state.deferredPrompt = null;
+        }
     },
 
     initPTR() {
@@ -326,10 +391,9 @@ const app = {
         content.addEventListener('touchstart', e => { if (content.scrollTop === 0) app.state.ptrStart = e.touches[0].pageY; }, {passive: true});
         content.addEventListener('touchmove', e => {
             const y = e.touches[0].pageY;
-            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 95) {
+            if (content.scrollTop === 0 && (y - app.state.ptrStart) > 110) {
                 if (!app.state.isRefreshing) {
-                    app.state.isRefreshing = true;
-                    app.toast("Загружена новая версия! Обновляемся...");
+                    app.state.isRefreshing = true; app.toast("Загружена новая версия! Обновляемся...");
                     setTimeout(() => location.reload(), 1500);
                 }
             }
@@ -345,7 +409,7 @@ const app = {
         document.getElementById('globalBackBtn').classList.remove('visible');
         document.getElementById('headerStatus').style.display = 'none';
         document.getElementById('headerTitle').innerText = (tab === 'history') ? 'История' : 'СкладРасклад';
-        app.updateDraftBtnUI();
+        app.updateDraftBtnUI(); app.showInstallBtn();
         if(tab === 'history') app.renderHistory();
     },
 
@@ -358,8 +422,7 @@ const app = {
         const statusEl = document.getElementById('headerStatus');
         statusEl.style.display = 'block';
         statusEl.innerText = (context === 'history') ? '📜 ИЗ ИСТОРИИ' : (context === 'draft') ? '📂 ЧЕРНОВИК' : '✨ НОВЫЙ';
-        app.renderGroupsUI(); 
-        app.triggerAnim('model');
+        app.renderGroupsUI(); app.triggerAnim('model');
     },
 
     handleDraftClick() {
@@ -377,8 +440,7 @@ const app = {
             const msg = (app.state.editContext === 'history') 
                 ? "Есть СкладРасклад из истории. Если создадим новый, правки в старом не сохранятся. Продолжить?"
                 : "Есть незавершенный СкладРасклад. Если создадим новый, черновик будет удалён. Продолжить?";
-            document.getElementById('confirmMsg').innerText = msg;
-            app.openSheet('confirmSheet');
+            document.getElementById('confirmMsg').innerText = msg; app.openSheet('confirmSheet');
         } else { app.confirmStartNew(); }
     },
 
@@ -408,8 +470,7 @@ const app = {
     },
 
     setModel(name) {
-        app.state.curModel = name; 
-        app.state.curMem = app.models.find(m => m.name === name).mem[0];
+        app.state.curModel = name; app.state.curMem = app.models.find(m => m.name === name).mem[0];
         document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-name') === name));
         app.triggerAnim('model');
     },
@@ -424,62 +485,41 @@ const app = {
         const card = document.getElementById('editorCard');
         const list = document.getElementById('colorsList');
         if (type === 'model') {
-            card.classList.remove('card-jump-anim');
-            void card.offsetWidth;
-            card.classList.add('card-jump-anim');
-            app.renderEditorContent(); 
+            card.classList.remove('card-jump-anim'); void card.offsetWidth;
+            card.classList.add('card-jump-anim'); app.renderEditorContent(); 
         } else {
-            list.classList.remove('list-pop-anim');
-            void list.offsetWidth;
-            app.renderColorsOnly();
-            list.classList.add('list-pop-anim');
+            list.classList.remove('list-pop-anim'); void list.offsetWidth;
+            app.renderColorsOnly(); list.classList.add('list-pop-anim');
         }
     },
 
     renderEditorContent() {
         const model = app.models.find(m => m.name === app.state.curModel);
-        const nameEl = document.getElementById('curModelName');
-        nameEl.innerText = `iPhone ${model.name}`;
+        const nameEl = document.getElementById('curModelName'); nameEl.innerText = `iPhone ${model.name}`;
         const memContainer = document.getElementById('memGroup');
         memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join('');
-        nameEl.classList.remove('marquee-active');
-        nameEl.style.transform = 'translateX(0)';
+        
+        nameEl.classList.remove('marquee-active'); nameEl.style.transform = 'translateX(0)';
         setTimeout(() => {
-            const wrapper = nameEl.parentElement;
-            const diff = wrapper.offsetWidth - nameEl.scrollWidth;
-            if (diff < 0) {
-                nameEl.style.setProperty('--move-dist', (diff - 10) + 'px');
-                nameEl.classList.add('marquee-active');
-            }
+            const wrapper = nameEl.parentElement; const diff = wrapper.offsetWidth - nameEl.scrollWidth;
+            if (diff < 0) { nameEl.style.setProperty('--move-dist', (diff - 10) + 'px'); nameEl.classList.add('marquee-active'); }
         }, 150);
         app.renderColorsOnly();
     },
 
     renderColorsOnly() {
         const model = app.models.find(m => m.name === app.state.curModel);
-        let sorted = [...model.col].sort((a,b) => {
-            const p = {"💛": 1, "❤️": 2}; return (p[a] || 0) - (p[b] || 0);
-        });
+        let sorted = [...model.col].sort((a,b) => { const p = {"💛": 1, "❤️": 2}; return (p[a] || 0) - (p[b] || 0); });
         document.getElementById('colorsList').innerHTML = sorted.map(c => {
             const val = app.state.stock[model.name]?.[app.state.curMem]?.[c] || 0;
-            return `<div class="color-item">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="font-size:24px;">${c}</span>
-                    <span style="font-weight:600; font-size:15px; color:var(--text-secondary);">${app.getLabel(c, model.name)}</span>
-                </div>
-                <div class="counter-box">
-                    <button class="c-btn" onclick="app.changeCount('${c}', -1)">−</button>
-                    <input type="number" inputmode="numeric" class="c-input" value="${val}" onfocus="this.select()" oninput="app.setCount('${c}', this.value)">
-                    <button class="c-btn" onclick="app.changeCount('${c}', 1)">+</button>
-                </div>
-            </div>`;
+            return `<div class="color-item"><div style="display:flex; align-items:center; gap:12px;"><span style="font-size:24px;">${c}</span><span style="font-weight:600; font-size:15px; color:var(--text-secondary);">${app.getLabel(c, model.name)}</span></div>
+                <div class="counter-box"><button class="c-btn" onclick="app.changeCount('${c}', -1)">−</button><input type="number" inputmode="numeric" class="c-input" value="${val}" onfocus="this.select()" oninput="app.setCount('${c}', this.value)"><button class="c-btn" onclick="app.changeCount('${c}', 1)">+</button></div></div>`;
         }).join('');
     },
 
     changeCount(col, delta) {
         const m = app.state.curModel, mem = app.state.curMem;
-        if(!app.state.stock[m]) app.state.stock[m] = {};
-        if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
+        if(!app.state.stock[m]) app.state.stock[m] = {}; if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, (app.state.stock[m][mem][col] || 0) + delta);
         if (window.navigator.vibrate) window.navigator.vibrate(15);
         app.save(); app.renderColorsOnly(); app.renderGroupsUI();
@@ -487,8 +527,7 @@ const app = {
 
     setCount(col, val) {
         const m = app.state.curModel, mem = app.state.curMem;
-        if(!app.state.stock[m]) app.state.stock[m] = {};
-        if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
+        if(!app.state.stock[m]) app.state.stock[m] = {}; if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, parseInt(val) || 0);
         app.save(); app.renderGroupsUI();
     },
@@ -510,8 +549,7 @@ const app = {
     finish() {
         const t = app.gen(); if(!t) return app.toast("СкладРасклад пуст");
         document.getElementById('reportText').innerText = t;
-        const isHistory = (app.state.editContext === 'history');
-        document.getElementById('saveChangesBtn').style.display = isHistory ? 'block' : 'none';
+        document.getElementById('saveChangesBtn').style.display = (app.state.editContext === 'history') ? 'block' : 'none';
         app.openSheet('reportSheet');
     },
 
@@ -522,8 +560,7 @@ const app = {
                 m.mem.forEach(mem => {
                     const d = app.state.stock[m.name][mem];
                     if(d) {
-                        const p = [];
-                        m.col.forEach(c => { if(d[c] > 0) p.push(`${d[c]}${c}`); });
+                        const p = []; m.col.forEach(c => { if(d[c] > 0) p.push(`${d[c]}${c}`); });
                         if(p.length) res += `${m.name} ${mem.replace(' ','')} - ${p.join(' ')}\n`;
                     }
                 });
@@ -532,18 +569,13 @@ const app = {
         return res.trim();
     },
 
-    async shareCurrent() {
-        const text = app.gen();
-        if (navigator.share) { try { await navigator.share({ text: text }); app.finalizeReport(text, 'share'); } catch (e) {} }
-    },
-
-    async copyAndSave() { const text = app.gen(); const ok = await app.copy(text); if(ok) app.finalizeReport(text, 'copy'); },
+    async shareCurrent() { const t = app.gen(); if (navigator.share) { try { await navigator.share({ text: t }); app.finalizeReport(t, 'share'); } catch (e) {} } },
+    async copyAndSave() { const t = app.gen(); const ok = await app.copy(t); if(ok) app.finalizeReport(t, 'copy'); },
 
     saveHistoryEdit() {
-        const text = app.gen();
-        const entry = app.state.history.find(h => h.id == app.state.selectedHistoryId);
+        const t = app.gen(); const entry = app.state.history.find(h => h.id == app.state.selectedHistoryId);
         if (entry) {
-            entry.content = text; entry.stock = JSON.parse(JSON.stringify(app.state.stock));
+            entry.content = t; entry.stock = JSON.parse(JSON.stringify(app.state.stock));
             localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
             app.state.stock = {}; app.save(); app.closeSheets(); app.toast("Сохранено!"); app.renderHistory(); app.navTo('home');
         }
@@ -565,29 +597,18 @@ const app = {
     },
 
     openHistoryItem(id) {
-        const item = app.state.history.find(h => h.id == id);
-        if(!item) return;
+        const item = app.state.history.find(h => h.id == id); if(!item) return;
         document.getElementById('histSheetDate').innerText = item.date;
         document.getElementById('histSheetText').innerText = item.content;
         app.state.selectedHistoryId = id; app.openSheet('historyActionSheet');
     },
 
-    async shareFromHistory() {
-        const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if (navigator.share && item) { try { await navigator.share({ text: item.content }); } catch (e) {} }
-    },
-
-    async copyFromHistory() {
-        const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if(item) { const ok = await app.copy(item.content); if(ok) app.toast("Скопировано!"); }
-    },
+    async shareFromHistory() { const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); if (navigator.share && item) { try { await navigator.share({ text: item.content }); } catch (e) {} } },
+    async copyFromHistory() { const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); if(item) { const ok = await app.copy(item.content); if(ok) app.toast("Скопировано!"); } },
 
     editFromHistory() {
         const item = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if(item) {
-            app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); 
-            app.closeSheets(); app.navTo('home', false); app.openEditor('history');
-        }
+        if(item) { app.state.stock = JSON.parse(JSON.stringify(item.stock)); app.save(); app.closeSheets(); app.navTo('home', false); app.openEditor('history'); }
     },
 
     deleteFromHistory() {
@@ -597,64 +618,26 @@ const app = {
         app.renderHistory(); app.closeSheets(); app.toast("Удалено");
     },
 
-    clearHistory() {
-        app.state.history = []; localStorage.removeItem('sklad_history'); 
-        app.renderHistory(); app.closeSheets(); app.toast("История очищена");
-    },
+    clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(); app.toast("История очищена"); },
 
-    openSheet(id) { 
-        document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active'));
-        const el = document.getElementById(id);
-        if(el) setTimeout(() => el.classList.add('active'), 10);
-    },
+    openSheet(id) { document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active')); const el = document.getElementById(id); if(el) setTimeout(() => el.classList.add('active'), 10); },
     closeSheets() { document.querySelectorAll('.sheet-overlay').forEach(s => s.classList.remove('active')); },
     
     setTheme(m, close=true) {
         localStorage.setItem('theme', m);
         const dark = m === 'dark' || (m === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        document.body.classList.toggle('dark', dark);
+        document.documentElement.classList.toggle('dark', dark);
         const statusColor = dark ? '#000000' : '#f2f2f7';
-        const meta = document.getElementById('themeColorMeta');
-        if(meta) meta.setAttribute('content', statusColor);
-        const container = document.getElementById('appContainer');
-        if(container) container.style.background = statusColor;
-        const icon = document.getElementById('themeIconMain');
-        if(icon) icon.innerText = dark ? '🌙' : '☀️';
+        document.getElementById('themeColorMeta').setAttribute('content', statusColor);
+        document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️';
         document.querySelectorAll('.theme-item').forEach(el => el.classList.remove('active'));
         const activeItem = document.getElementById('t-' + m); if(activeItem) activeItem.classList.add('active');
         if(close) app.closeSheets();
     },
 
-    async copy(text) {
-        try { await navigator.clipboard.writeText(text); return true; } catch (e) {
-            const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.left = "-999px";
-            document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return true;
-        }
-    },
-
-    toast(m) { 
-        const t = document.getElementById('toast'); 
-        if(!t) return;
-        t.innerText = m; t.classList.add('active');
-        if (window.navigator.vibrate) window.navigator.vibrate(30);
-        setTimeout(() => t.classList.remove('active'), 3500); 
-    },
-
-    registerSW() {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                reg.addEventListener('updatefound', () => {
-                    const nw = reg.installing;
-                    nw.addEventListener('statechange', () => {
-                        if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-                            app.toast("Загружена новая версия! Обновляемся...");
-                            setTimeout(() => window.location.reload(), 1500);
-                        }
-                    });
-                });
-            });
-        }
-    }
+    async copy(text) { try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; } },
+    toast(m) { const t = document.getElementById('toast'); if(!t) return; t.innerText = m; t.classList.add('active'); if (window.navigator.vibrate) window.navigator.vibrate(30); setTimeout(() => t.classList.remove('active'), 3500); },
+    registerSW() { if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(() => {}); } }
 };
 window.addEventListener('load', () => app.init());
 </script>
