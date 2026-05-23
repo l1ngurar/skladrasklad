@@ -38,6 +38,7 @@
 
         .app-container { max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--bg-page); }
 
+        /* Шапка */
         .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; }
@@ -47,6 +48,7 @@
         .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; cursor: pointer; }
         .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
 
+        /* Контент */
         .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; }
         .screen { display: none; opacity: 0; width: 100%; }
         .screen.active { display: block; animation: screenIn 0.3s ease forwards; }
@@ -55,24 +57,21 @@
         .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        /* Кнопки */
+        /* Стандарт кнопок */
         .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
         .btn-primary { background: var(--primary); color: white; border: none; }
         .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
         .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
         .btn-danger-fill { background: var(--danger); color: white; border: none; }
         .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
-        
-        #installBtn { display: none; margin-top: 12px; background: var(--surface-2); color: var(--primary); border: 1px dashed var(--primary); }
 
-        /* Редактор: Одна строка */
+        /* Редактор */
         .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; overflow: hidden; height: 42px; }
         .model-name-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
         .model-name-text { font-size: 19px; font-weight: 800; display: inline-block; }
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
         @keyframes marqueeBounce { 0%, 20% { transform: translateX(0); } 80%, 100% { transform: translateX(var(--move-dist)); } }
 
-        /* Чипсы памяти */
         .mem-chips-wrap { display: flex; gap: 2px; background: var(--surface-2); padding: 3px; border-radius: 12px; border: 0.5px solid var(--border); flex-shrink: 0; }
         .mem-chip { padding: 6px 10px; border-radius: 9px; font-size: 11px; font-weight: 800; background: transparent; color: var(--text-secondary); border: none; transition: 0.3s; cursor: pointer; }
         .mem-chip.active { background: var(--surface) !important; color: var(--primary) !important; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transform: scale(1.03); }
@@ -105,6 +104,7 @@
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
+        /* Тема */
         .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; color: var(--text-primary); transition: 0.2s; }
         .theme-item.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary) !important; }
 
@@ -182,7 +182,8 @@
                 <div id="colorsList"></div>
             </div>
             <div style="display: flex; gap: 12px;">
-                <button class="btn btn-danger" onclick="app.openSheet('resetConfirmSheet')">Очистить</button>
+                <!-- ДИНАМИЧЕСКАЯ КНОПКА (ОЧИСТИТЬ / УДАЛИТЬ) -->
+                <button id="editorDangerBtn" class="btn btn-danger" onclick="app.handleEditorReset()">Очистить</button>
                 <button class="btn btn-primary" onclick="app.finish()">Завершить</button>
             </div>
         </section>
@@ -239,7 +240,7 @@
         <button class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareFromHistory()">Поделиться</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.copyFromHistory()">Копировать</button>
         <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="app.editFromHistory()">Редактировать</button>
-        <button class="btn btn-danger" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
+        <button class="btn btn-secondary" style="color:var(--danger); border-color:var(--danger);" onclick="app.openSheet('entryDeleteSheet')">Удалить</button>
     </div>
 </div>
 
@@ -383,7 +384,16 @@ const app = {
         const statusEl = document.getElementById('headerStatus');
         statusEl.style.display = 'block';
         statusEl.innerText = (context === 'history') ? '📜 ИЗ ИСТОРИИ' : (context === 'draft') ? '📂 ЧЕРНОВИК' : '✨ НОВЫЙ';
+        
+        // Кнопка в редакторе: Очистить или Удалить
+        document.getElementById('editorDangerBtn').innerText = (context === 'history') ? 'Удалить' : 'Очистить';
+
         app.renderGroupsUI(); app.triggerAnim('model');
+    },
+
+    handleEditorReset() {
+        if (app.state.editContext === 'history') app.openSheet('entryDeleteSheet');
+        else app.openSheet('resetConfirmSheet');
     },
 
     handleDraftClick() {
@@ -548,7 +558,9 @@ const app = {
         if (entry) {
             entry.content = t; entry.stock = JSON.parse(JSON.stringify(app.state.stock));
             localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
-            app.state.stock = {}; app.save(); app.closeSheets(true); app.toast("Сохранено!"); app.renderHistory(); app.navTo('home');
+            app.state.stock = {}; app.save(); app.closeSheets(true); 
+            app.toast("Сохранено!"); 
+            setTimeout(() => app.navTo('home'), 200);
         }
     },
 
@@ -566,7 +578,8 @@ const app = {
         app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null;
         app.save(); app.renderHistory(); app.closeSheets(true);
         const phrases = { 'share': "Отправлено и сохранено!", 'copy': "Скопировано и сохранено!" };
-        app.toast(phrases[method] || "Сохранено!"); app.navTo('home');
+        app.toast(phrases[method] || "Сохранено!"); 
+        setTimeout(() => app.navTo('home'), 200);
     },
 
     renderHistory() {
@@ -604,10 +617,7 @@ const app = {
             app.state.stock = JSON.parse(JSON.stringify(item.stock)); 
             app.save(); 
             app.closeSheets(true); 
-            setTimeout(() => {
-                app.navTo('home', false);
-                app.openEditor('history');
-            }, 200);
+            setTimeout(() => { app.navTo('home', false); app.openEditor('history'); }, 250);
         }
     },
 
@@ -616,6 +626,7 @@ const app = {
         app.state.history = app.state.history.filter(h => h.id != app.state.selectedHistoryId);
         localStorage.setItem('sklad_history', JSON.stringify(app.state.history));
         app.renderHistory(); app.closeSheets(true); app.toast("Удалено");
+        setTimeout(() => app.navTo('home'), 300);
     },
 
     clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(true); app.toast("История очищена"); },
