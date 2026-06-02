@@ -120,7 +120,6 @@
         .theme-item { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; font-weight: 700; border: 1px solid var(--border); cursor: pointer; color: var(--text-primary); transition: 0.2s; }
         .theme-item.active { background: var(--primary) !important; color: #ffffff !important; border-color: var(--primary) !important; }
 
-        /* ИНФО-ГРУППЫ */
         .info-group { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 25px; }
         .info-row { padding: 16px; border-bottom: 0.5px solid var(--border); text-align: left; }
         .info-row:last-child { border-bottom: none; }
@@ -139,10 +138,6 @@
         .h-text { font-size: 14px; color: var(--text-secondary); line-height: 1.4; white-space: pre-wrap; }
 
         .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .toast { position: fixed; bottom: calc(100px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; }
-        .toast.active { opacity: 1; transform: translateX(-50%) scale(1); visibility: visible; }
-        .dark .toast { background: var(--primary); }
-
         .footer-phrase { color: var(--text-tertiary); font-size: 11px; margin-top: 50px; line-height: 1.6; text-wrap: balance; text-align: center; max-width: 300px; margin-left: auto; margin-right: auto; }
         .rename-input { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; color: var(--text-primary); outline: none; margin-bottom: 20px; }
         #keyboardSpacer { height: 0; transition: height 0.3s ease; }
@@ -372,7 +367,8 @@
 </div>
 
 <script>
-const APP_MODE = 'retail'; // 'office' или 'retail'
+// РЕЖИМ ПРИЛОЖЕНИЯ: 'office' или 'retail'
+const APP_MODE = 'retail'; 
 
 const modelsOffice = [
     { name: "X", mem: ["64","256"], col: ["🖤","🤍"] },
@@ -406,24 +402,24 @@ const modelsOffice = [
 
 const modelsRetail = [
     { name: "11", mem: ["128","256"], col: ["🖤","🤍","💚","💛","❤️","💜"] },
-    { name: "11 Pro", mem: ["256","512"], col: ["🖤","🤍","💚","💛"] },
-    { name: "11 Pro Max", mem: ["256","512"], col: ["🖤","🤍","💚","💛"] },
-    { name: "12 mini", mem: ["128","256"], col: ["🖤","🤍","💙","💚","💜","❤️"] },
+    { name: "11 п", mem: ["256","512"], col: ["🖤","🤍","💚","💛"] },
+    { name: "11 пм", mem: ["256","512"], col: ["🖤","🤍","💚","💛"] },
+    { name: "12 мини", mem: ["128","256"], col: ["🖤","🤍","💙","💚","💜","❤️"] },
     { name: "12", mem: ["128","256"], col: ["🖤","🤍","💙","💚","💜","❤️"] },
-    { name: "12 Pro", mem: ["128","256","512"], col: ["🖤","🤍","💙","💛"] },
-    { name: "12 Pro Max", mem: ["128","256","512"], col: ["🖤","🤍","💙","💛"] },
-    { name: "13 mini", mem: ["128","256","512"], col: ["🖤","🤍","💙","🩷","💚","❤️"] },
+    { name: "12 п", mem: ["128","256","512"], col: ["🖤","🤍","💙","💛"] },
+    { name: "12 пм", mem: ["128","256","512"], col: ["🖤","🤍","💙","💛"] },
+    { name: "13 мини", mem: ["128","256","512"], col: ["🖤","🤍","💙","🩷","💚","❤️"] },
     { name: "13", mem: ["128","256","512"], col: ["🖤","🤍","💙","🩷","💚","❤️"] },
-    { name: "13 Pro", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
-    { name: "13 Pro Max", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
+    { name: "13 п", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
+    { name: "13 пм", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
     { name: "14", mem: ["128","256","512"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
-    { name: "14 Plus", mem: ["128","256"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
-    { name: "14 Pro", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
-    { name: "14 Pro Max", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
+    { name: "14 плюс", mem: ["128","256"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
+    { name: "14 про", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
+    { name: "14 пм", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
     { name: "15", mem: ["128","256","512"], col: ["🖤","💙","💚","🩷","💛"] },
-    { name: "15 Plus", mem: ["128","256"], col: ["🖤","💙","💚","🩷","💛"] },
-    { name: "15 Pro", mem: ["128","256"], col: ["🖤","🤍","💙","🩶"] },
-    { name: "15 Pro Max", mem: ["256","512","1TB"], col: ["🖤","🤍","💙","🩶"] }
+    { name: "15 плюс", mem: ["128","256"], col: ["🖤","💙","💚","🩷","💛"] },
+    { name: "15 про", mem: ["128","256"], col: ["🖤","🤍","💙","🩶"] },
+    { name: "15 пм", mem: ["256","512","1TB"], col: ["🖤","🤍","💙","🩶"] }
 ];
 
 const app = {
@@ -447,9 +443,9 @@ const app = {
     },
 
     showInstallBtn() {
-        const isStand = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
         const btn = document.getElementById('installBtn'); if (!btn) return;
-        if (isStand) { btn.style.display = 'none'; return; }
+        if (isStandalone) { btn.style.display = 'none'; return; }
         const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         const isPC = window.matchMedia('(pointer: fine)').matches;
         if (isTouch && !isPC && (app.state.deferredPrompt || /iPad|iPhone|iPod/.test(navigator.userAgent))) { btn.style.display = 'flex'; } else { btn.style.display = 'none'; }
@@ -516,7 +512,7 @@ const app = {
             setTimeout(() => { el.value = ''; el.value = val; }, 10);
         }
         clearTimeout(app.state.blurTimer);
-        document.getElementById('scrollContent').style.paddingBottom = '50dvh';
+        document.getElementById('keyboardSpacer').style.height = '40dvh';
         const isAndroid = /Android/i.test(navigator.userAgent);
         setTimeout(() => {
             el.closest('.color-item').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -525,10 +521,7 @@ const app = {
 
     handleInputBlur(el, col) {
         if(el.value === '') { el.value = '0'; app.setCount(col, 0); }
-        app.state.blurTimer = setTimeout(() => {
-            document.getElementById('keyboardSpacer').style.height = '0';
-            document.getElementById('scrollContent').style.paddingBottom = '';
-        }, 150);
+        app.state.blurTimer = setTimeout(() => { document.getElementById('keyboardSpacer').style.height = '0'; }, 150);
     },
 
     renderColorsOnly() {
@@ -584,7 +577,13 @@ const app = {
     handlePopState(e) { const active = document.querySelector('.sheet-overlay.active'); if (active) { active.classList.remove('active'); return; } const s = e.state; if (!s) { app.navTo('home', false); return; } if (s.view === 'editor') app.openEditor(app.state.editContext); else app.navTo(s.tab, false); },
     updateDraftBtnUI() { const hasData = Object.values(app.state.stock).some(m => Object.values(m).some(mem => Object.values(mem).some(v => v > 0))); const btn = document.getElementById('draftBtn'); if (hasData) { btn.classList.remove('btn-draft-empty'); btn.innerHTML = app.state.selectedHistoryId ? "📜 Продолжить правку" : "📂 Продолжить черновик"; } else { btn.classList.add('btn-draft-empty'); btn.innerText = "Нет черновика"; } },
     renderGroupsUI() { const container = document.getElementById('groupsScroll'); container.innerHTML = app.models.map(m => { const hasData = app.state.stock[m.name] && Object.values(app.state.stock[m.name]).some(mem => Object.values(mem).some(v => v > 0)); return `<div class="group-chip ${app.state.curModel === m.name ? 'active' : ''}" data-name="${m.name}" onclick="app.setModel('${m.name}')">${m.name}${hasData ? '<div class="dot"></div>' : ''}</div>`; }).join(''); const active = container.querySelector('.active'); setTimeout(() => app.scrollToChip(active), 100); },
-    setModel(name) { app.state.curModel = name; app.state.curMem = app.models.find(m => m.name === name).mem[0]; document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-name') === name)); app.scrollToChip(document.querySelector('.group-chip.active')); app.triggerAnim('model'); },
+    
+    setModel(name) {
+        app.state.curModel = name; app.state.curMem = app.models.find(m => m.name === name).mem[0];
+        document.querySelectorAll('.group-chip').forEach(el => el.classList.toggle('active', el.getAttribute('data-name') === name));
+        app.triggerAnim('model');
+    },
+
     setMem(m) {
         app.state.curMem = m;
         document.querySelectorAll('.mem-chip').forEach(el => {
@@ -593,17 +592,56 @@ const app = {
             const hasData = app.state.stock[app.state.curModel]?.[memSize] && Object.values(app.state.stock[app.state.curModel][memSize]).some(v => v > 0);
             el.classList.toggle('filled', !!hasData);
         });
-        app.scrollToChip(document.querySelector('.mem-chip.active')); app.triggerAnim('memory');
+        app.scrollToChip(document.querySelector('.mem-chip.active'));
+        app.triggerAnim('memory');
     },
-    updateMemHighlights() { const m = app.state.curModel; document.querySelectorAll('.mem-chip').forEach(el => { const memSize = el.getAttribute('data-mem'); const hasData = app.state.stock[m]?.[memSize] && Object.values(app.state.stock[m][memSize]).some(v => v > 0); el.classList.toggle('filled', !!hasData); }); },
-    triggerAnim(type) { const card = document.getElementById('editorCard'); const list = document.getElementById('colorsList'); if (type === 'model') { card.classList.remove('card-jump-anim'); void card.offsetWidth; card.classList.add('card-jump-anim'); app.renderEditorContent(); } else { list.classList.remove('list-pop-anim'); void list.offsetWidth; app.renderColorsOnly(); list.classList.add('list-pop-anim'); } },
-    renderEditorContent() { const model = app.models.find(m => m.name === app.state.curModel); document.getElementById('curModelName').innerText = `iPhone ${model.name}`; const memContainer = document.getElementById('memGroup'); memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join(''); app.updateMemHighlights(); const nameEl = document.getElementById('curModelName'); nameEl.classList.remove('marquee-active'); nameEl.style.transform = 'translateX(0)'; setTimeout(() => { const wrapper = nameEl.parentElement; const diff = wrapper.offsetWidth - nameEl.scrollWidth; if (diff < 0) { nameEl.style.setProperty('--move-dist', (diff - 10) + 'px'); nameEl.classList.add('marquee-active'); } }, 150); app.renderColorsOnly(); },
+
+    updateMemHighlights() {
+        const m = app.state.curModel;
+        document.querySelectorAll('.mem-chip').forEach(el => {
+            const memSize = el.getAttribute('data-mem');
+            const hasData = app.state.stock[m]?.[memSize] && Object.values(app.state.stock[m][memSize]).some(v => v > 0);
+            el.classList.toggle('filled', !!hasData);
+        });
+    },
+
+    triggerAnim(type) {
+        const card = document.getElementById('editorCard');
+        const list = document.getElementById('colorsList');
+        if (type === 'model') {
+            card.classList.remove('card-jump-anim');
+            void card.offsetWidth; card.classList.add('card-jump-anim');
+            app.renderEditorContent();
+        } else {
+            list.classList.remove('list-pop-anim');
+            void list.offsetWidth;
+            app.renderColorsOnly();
+            list.classList.add('list-pop-anim');
+        }
+    },
+
+    renderEditorContent() {
+        const model = app.models.find(m => m.name === app.state.curModel);
+        document.getElementById('curModelName').innerText = `iPhone ${model.name}`;
+        const memContainer = document.getElementById('memGroup');
+        memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join('');
+        app.updateMemHighlights();
+        const nameEl = document.getElementById('curModelName'); 
+        nameEl.classList.remove('marquee-active'); nameEl.style.transform = 'translateX(0)';
+        setTimeout(() => {
+            const wrapper = nameEl.parentElement; const diff = wrapper.offsetWidth - nameEl.scrollWidth;
+            if (diff < 0) { nameEl.style.setProperty('--move-dist', (diff - 10) + 'px'); nameEl.classList.add('marquee-active'); }
+        }, 150);
+        app.renderColorsOnly();
+        app.scrollToChip(document.querySelector('.group-chip.active'));
+    },
+
     save() { localStorage.setItem('sklad_grouped', JSON.stringify(app.state.stock)); },
     getLabel(emoji, modelName) { if(emoji === "💛") { if(modelName.includes("16 Pro")) return "пустынный"; if(modelName.includes("Pro") || modelName.includes("XS")) return "золотой"; return "жёлтый"; } const map = {"🖤":"чёрный","🤍":"белый","💙":"синий","💚":"зелёный","❤️":"красный","💜":"фиолетовый","🩷":"розовый","🧡":"коралловый","🩶":"титан"}; return map[emoji] || ""; },
     resetEditor() { app.state.stock = {}; app.save(); app.closeSheets(true); app.renderGroupsUI(); app.triggerAnim('model'); app.updateDraftBtnUI(); app.toast("Склад очищен"); },
     finish() { const t = app.gen(); if(!t) return app.toast("СкладРасклад пуст"); document.getElementById('reportText').innerText = t; const isEdit = (app.state.selectedHistoryId != null); const shareBtn = document.getElementById('mainShareBtn'); const saveBtn = document.getElementById('saveChangesBtn'); saveBtn.style.display = isEdit ? 'block' : 'none'; if(isEdit) { shareBtn.classList.remove('btn-primary'); shareBtn.classList.add('btn-secondary'); } else { shareBtn.classList.remove('btn-secondary'); shareBtn.classList.add('btn-primary'); } app.openSheet('reportSheet'); },
     
-    // ИСПРАВЛЕННЫЙ ЭКСПОРТ: Показывает модель-память всегда, но сердечки только если > 0
+    // ЭКСПОРТ С НУЛЯМИ
     gen() {
         let res = "";
         app.models.forEach(m => {
