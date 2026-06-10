@@ -1,4 +1,4 @@
-const CACHE_NAME = 'skladrasklad-v11';
+const CACHE_NAME = 'skladrasklad-v12';
 
 const assets = [
   './',
