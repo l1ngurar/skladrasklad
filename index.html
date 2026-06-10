@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" style="overscroll-behavior-y: none;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
@@ -34,52 +34,52 @@
             --tg-bg: #2b5278; --tg-text: #ffffff;
         }
 
-        html, body { height: 100%; width: 100%; background: var(--bg-page); color: var(--text-primary); transition: background 0.3s; overflow: hidden; position: fixed; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
+        html, body { height: 100%; width: 100%; background: var(--bg-page); color: var(--text-primary); transition: background 0.3s; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
 
         .app-container { max-width: 600px; margin: 0 auto; width: 100%; height: 100dvh; display: flex; flex-direction: column; background: var(--bg-page); }
 
-        .app-header { padding: calc(15px + var(--safe-top)) 20px 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; flex-shrink: 0; }
+        /* Шапка в края экрана */
+        .app-header { padding: calc(15px + var(--safe-top)) 0 10px; display: flex; align-items: center; justify-content: space-between; z-index: 10; flex-shrink: 0; }
         .header-main { flex: 1; display: flex; align-items: center; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .header-titles { display: flex; flex-direction: column; align-items: flex-start; overflow: hidden; }
         .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.7px; margin: 0; line-height: 1.1; text-align: left; }
-        .header-context { 
-            font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; 
-            display: block; max-height: 0; opacity: 0; transition: 0.3s ease; 
-        }
+        .header-context { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; display: block; max-height: 0; opacity: 0; transition: 0.3s ease; }
         .header-context.visible { max-height: 15px; opacity: 1; margin-top: 2px; }
 
-        .header-side { display: flex; align-items: center; justify-content: flex-end; gap: 14px; min-width: 90px; height: 32px; transition: all 0.3s ease; }
-        .theme-btn { font-size: 22px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .header-side { display: flex; align-items: center; justify-content: flex-end; gap: 4px; min-width: 90px; height: 32px; }
+        .theme-btn { width: 38px; height: 38px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); border-radius: 50%; transition: 0.2s; }
+        .theme-btn:active { background: var(--surface-2); }
+        .theme-btn svg { width: 22px; height: 22px; stroke-width: 2.2; }
 
-        #globalResetBtn { width: 32px; opacity: 1; transition: width 0.3s ease, opacity 0.2s; overflow: hidden; }
+        #globalResetBtn { width: 38px; opacity: 1; transition: 0.3s; overflow: hidden; color: var(--danger); }
         #globalResetBtn.hidden { width: 0; opacity: 0; pointer-events: none; }
 
-        .back-btn { width: 0; opacity: 0; overflow: hidden; font-size: 24px; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; cursor: pointer; }
-        .back-btn.visible { width: 32px; opacity: 1; margin-right: 8px; }
+        .back-btn { width: 0; opacity: 0; overflow: hidden; background: none; border: none; color: var(--text-primary); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .back-btn.visible { width: 38px; opacity: 1; }
+        .back-btn svg { width: 24px; height: 24px; stroke-width: 2.5; }
 
-        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; overscroll-behavior-y: contain; transition: padding-bottom 0.3s ease; }
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0 16px calc(85px + var(--safe-bottom)); position: relative; }
         .screen { display: none; opacity: 0; width: 100%; }
         .screen.active { display: block; animation: screenIn 0.3s ease forwards; }
         @keyframes screenIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 65dvh; }
+        .centered-view { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 60dvh; }
         .card { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); width: 100%; }
         
-        .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; }
-        .btn-primary { background: var(--primary); color: white; border: none; }
-        .btn-secondary { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
+        .btn { border: 1px solid transparent; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border: none; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); }
         .btn-danger { background: var(--surface); color: var(--danger); border: 1px solid var(--danger); }
-        .btn-danger-fill { background: var(--danger); color: white; border: none; }
-        .btn-draft-empty { background: var(--surface-2); border-color: var(--border); color: var(--text-tertiary); opacity: 0.5; filter: grayscale(1); cursor: default; }
+        .btn-danger-fill { background: var(--danger); color: white; }
+        .btn-draft-empty { background: var(--surface-2); opacity: 0.5; filter: grayscale(1); }
 
         .card-jump-anim { animation: cardJump 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.1); }
         .list-pop-anim { animation: listPop 0.3s ease-out; }
         @keyframes cardJump { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes listPop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; height: 42px; }
+        .editor-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; height: 42px; }
         .model-name-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
         .model-name-text { font-size: 19px; font-weight: 800; display: inline-block; }
         .marquee-active { animation: marqueeBounce 5s ease-in-out infinite alternate; }
@@ -97,27 +97,26 @@
         .dot { position: absolute; top: 4px; right: 8px; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
 
         .color-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); scroll-margin: 110px; }
+        .color-item:last-child { border-bottom: none; }
         .color-info { display: flex; align-items: center; gap: 12px; text-align: left; }
         .color-emoji { font-size: 24px; }
         .color-label { font-weight: 600; font-size: 15px; color: var(--text-secondary); }
         .counter-box { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--surface-2); border-radius: 50px; padding: 3px; width: 115px; height: 40px; }
         .c-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--surface); color: var(--text-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .c-input { 
-            width: 100%; text-align: center; border: none; background: transparent; 
-            font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; padding: 0; margin: 0;
-            display: grid; place-items: center; appearance: none; -webkit-appearance: none; -moz-appearance: textfield;
-        }
+        .c-input { width: 100%; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 700; color: var(--text-primary); outline: none; padding: 0; margin: 0; display: grid; place-items: center; appearance: none; -webkit-appearance: none; -moz-appearance: textfield; }
         .c-input::-webkit-inner-spin-button, .c-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--border); display: flex; justify-content: space-around; padding: 8px 10px calc(8px + var(--safe-bottom)); z-index: 100; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(25px); border-top: 0.5px solid var(--border); z-index: 100; display: flex; justify-content: center; }
         .dark .bottom-nav { background: rgba(0,0,0,0.75); }
-        .nav-tab { background: none; border: none; outline: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; flex: 1; transition: color 0.3s; cursor: pointer; padding: 0; }
+        .nav-container { display: flex; width: 100%; max-width: 400px; justify-content: space-around; padding: 10px 10px calc(10px + var(--safe-bottom)); }
+        .nav-tab { background: none; border: none; outline: none; color: var(--text-tertiary); display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; flex: 1; transition: color 0.3s; cursor: pointer; }
         .nav-tab.active { color: var(--primary); }
-        .nav-tab span { font-size: 24px; }
+        .nav-tab svg { width: 24px; height: 24px; stroke-width: 2.2; }
 
         .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; display: flex; align-items: flex-end; }
         .sheet-overlay.active { opacity: 1; visibility: visible; }
-        .sheet { background: var(--bg-page); width: 100%; border-radius: 24px 24px 0 0; padding: 20px 20px calc(24px + var(--safe-bottom)); transform: translateY(100%); transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90dvh; overflow-y: auto; }
+        /* Модалки на ПК не во всю ширину */
+        .sheet { background: var(--bg-page); width: 100%; max-width: 600px; margin: 0 auto; border-radius: 24px 24px 0 0; padding: 20px 20px calc(24px + var(--safe-bottom)); transform: translateY(100%); transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90dvh; overflow-y: auto; }
         .sheet-overlay.active .sheet { transform: translateY(0); }
         .sheet-handle { width: 36px; height: 5px; background: var(--text-tertiary); border-radius: 10px; margin: -10px auto 20px; opacity: 0.4; }
 
@@ -139,7 +138,7 @@
         .history-card { background: var(--surface); border-radius: 18px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; text-align: left; }
         .h-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
         .h-date { font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
-        .h-text { font-size: 14px; color: var(--text-secondary); line-height: 1.4; white-space: pre-wrap; }
+        .h-count { font-size: 14px; font-weight: 700; color: var(--text-primary); }
 
         .tg-bubble { background: var(--tg-bg); color: var(--tg-text); padding: 12px 16px; border-radius: 18px 18px 18px 4px; font-size: 15px; line-height: 1.5; max-width: 85%; text-align: left; white-space: pre-wrap; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .toast { position: fixed; bottom: calc(100px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(0,0,0,0.85); color: white; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; text-align: center; }
@@ -148,39 +147,35 @@
 
         .footer-phrase { color: var(--text-tertiary); font-size: 11px; margin-top: 50px; line-height: 1.6; text-wrap: balance; text-align: center; max-width: 300px; margin-left: auto; margin-right: auto; }
         .rename-input { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; color: var(--text-primary); outline: none; margin-bottom: 20px; }
-        #keyboardSpacer { height: 0; transition: height 0.3s ease; }
     </style>
 </head>
 <body>
 
-<script>
-    (function() {
-        const theme = localStorage.getItem('theme') || 'system';
-        const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        if (dark) document.documentElement.classList.add('dark');
-        document.getElementById('themeColorMeta').setAttribute('content', dark ? '#000000' : '#f2f2f7');
-    })();
-</script>
-
 <div id="toast" class="toast"></div>
 
-<div class="app-container" id="appContainer">
-    <header class="app-header">
-        <div class="header-main">
-            <button class="back-btn" id="globalBackBtn" onclick="app.goBack()">←</button>
-            <div class="header-titles">
-                <h1 id="headerTitle">СкладРасклад</h1>
-                <span id="headerStatus" class="header-context"></span>
-            </div>
-        </div>
-        <div class="header-side">
-            <button id="globalResetBtn" class="theme-btn hidden" onclick="app.handleGlobalClear()">🗑️</button>
-            <button class="theme-btn" onclick="app.openSheet('infoSheet')">ℹ️</button>
-            <button id="themeIconMain" class="theme-btn" onclick="app.openSheet('themeSheet')">☀️</button>
-        </div>
-    </header>
-
+<div class="app-container">
     <main class="main-content" id="scrollContent">
+        <header class="app-header">
+            <div class="header-main">
+                <button class="back-btn" id="globalBackBtn" onclick="app.goBack()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="header-titles">
+                    <h1 id="headerTitle">СкладРасклад</h1>
+                    <span id="headerStatus" class="header-context"></span>
+                </div>
+            </div>
+            <div class="header-side">
+                <button id="globalResetBtn" class="theme-btn hidden" onclick="app.handleGlobalClear()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/></svg>
+                </button>
+                <button class="theme-btn" onclick="app.openSheet('infoSheet')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                </button>
+                <button id="themeIconMain" class="theme-btn" onclick="app.openSheet('themeSheet')"></button>
+            </div>
+        </header>
+
         <section id="homeScreen" class="screen active">
             <div class="centered-view">
                 <img src="./icon-256.png" style="width: 105px; height: 100px; border-radius: 24px; margin-bottom: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.12);">
@@ -202,7 +197,6 @@
                     <div id="memGroup" class="mem-chips-wrap"></div>
                 </div>
                 <div id="colorsList"></div>
-                <div id="keyboardSpacer"></div>
             </div>
             <div style="display: flex; gap: 12px;">
                 <button id="editorDangerBtn" class="btn btn-danger" onclick="app.handleEditorReset()">Обнулить</button>
@@ -217,8 +211,16 @@
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-tab active" onclick="app.navTo('home')" id="tab-home"><span>📦</span>СкладРасклад</button>
-        <button class="nav-tab" onclick="app.navTo('history')" id="tab-history"><span>📜</span>История</button>
+        <div class="nav-container">
+            <button class="nav-tab active" onclick="app.navTo('home')" id="tab-home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+                СкладРасклад
+            </button>
+            <button class="nav-tab" onclick="app.navTo('history')" id="tab-history">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                История
+            </button>
+        </div>
     </nav>
 </div>
 
@@ -227,9 +229,18 @@
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
         <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Оформление</h3>
-        <div class="theme-item" id="t-light" onclick="app.setTheme('light')"><span>☀️</span> Светлая</div>
-        <div class="theme-item" id="t-dark" onclick="app.setTheme('dark')"><span>🌙</span> Тёмная</div>
-        <div class="theme-item" id="t-system" onclick="app.setTheme('system')"><span>🖥️</span> Как в системе</div>
+        <div class="theme-item" id="t-light" onclick="app.setTheme('light')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            Светлая
+        </div>
+        <div class="theme-item" id="t-dark" onclick="app.setTheme('dark')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Тёмная
+        </div>
+        <div class="theme-item" id="t-system" onclick="app.setTheme('system')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Как в системе
+        </div>
     </div>
 </div>
 
@@ -265,7 +276,8 @@
 
         <h4 style="font-size:12px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:10px; text-align:left; padding-left:5px;">История обновлений</h4>
         <div class="info-group">
-            <div class="log-row"><b>v10</b><span>Обновил "зеленые индикаторы", теперь они подсвечивают и заполненную память. СкладРаскладу из истории теперь можно задать своё название. И оно будет отображаться в редакторе, когда СкладРасклад будет открыт для редактирования. А еще у каждого СкладРасклада видны даты создания и изменения. Исправил поведение приложения, связанное с появлением или скрытием клавиатуры с экрана. Экспорт теперь отображает и пустые позиции, т.к. оказалось, что с ними лучше, чем без них. И ещё парочку нюансов по логике интерфейса подправил.</span></div>
+            <div class="log-row"><b>v11</b><span>Добавлены счетчики количества. Исправлен масштаб интерфейса на ПК (так было надо). Оптимизирована логика свайпов и скролла.</span></div>
+            <div class="log-row"><b>v10</b><span>Обновил "зеленые индикаторы", теперь они подсвечивают и заполненою память. СкладРаскладу из истории теперь можно задать своё название. И оно будет отображаться в редакторе, когда СкладРасклад будет открыт для редактирования. А еще у каждого СкладРасклада видны даты создания и изменения. Теперь в выгрузке отображаются и пустые значения, т.к. оказалось удобнее, чем без них.</span></div>
             <div class="log-row"><b>v9</b><span>Первая стабильная версия. Четыре дня мучений не прошли зря :D</span></div>
         </div>
 
@@ -287,7 +299,8 @@
 <div class="sheet-overlay" id="reportSheet" onclick="app.closeSheets()">
     <div class="sheet" onclick="event.stopPropagation()">
         <div class="sheet-handle"></div>
-        <h3 style="margin-bottom: 20px; font-weight: 800; text-align: left;">Готовый СкладРасклад</h3>
+        <h3 style="margin-bottom: 5px; font-weight: 800; text-align: left;">Готовый СкладРасклад</h3>
+        <div id="reportTotalLine" style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:15px; text-align:left;"></div>
         <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="reportText" class="tg-bubble"></div></div>
         <button id="saveChangesBtn" class="btn btn-primary" style="display:none; margin-bottom:12px;" onclick="app.saveHistoryEdit()">Сохранить</button>
         <button id="mainShareBtn" class="btn btn-primary" style="margin-bottom:12px;" onclick="app.shareCurrent()">Поделиться</button>
@@ -300,7 +313,9 @@
         <div class="sheet-handle"></div>
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
             <h3 id="histSheetDate" style="font-weight: 800; text-align: left; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></h3>
-            <button class="theme-btn" style="font-size: 20px; margin-left: 10px;" onclick="app.openSheet('renameSheet')">✏️</button>
+            <button class="theme-btn" style="color:var(--primary);" onclick="app.openSheet('renameSheet')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
         </div>
         <div id="histMetaBox" style="font-size:12px; color:var(--text-secondary); margin-bottom:15px; text-align:left;"></div>
         <div style="display:flex; justify-content:flex-start; margin-bottom:25px;"><div id="histSheetText" class="tg-bubble"></div></div>
@@ -375,7 +390,7 @@
 </div>
 
 <script>
-// РЕЖИМ ПРИЛОЖЕНИЯ: 'office' или 'retail'
+// РЕЖИМ ПРИЛОЖЕНИЯ: 'retail'
 const APP_MODE = 'retail'; 
 
 const modelsOffice = [
@@ -421,12 +436,12 @@ const modelsRetail = [
     { name: "13 Pro", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
     { name: "13 Pro Max", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💙","💚","💛"] },
     { name: "14", mem: ["128","256","512"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
-    { name: "14 Plus", mem: ["128","256","512"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
+    { name: "14 Plus", mem: ["128","256"], col: ["🖤","🤍","💙","💜","💛","❤️"] },
     { name: "14 Pro", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
     { name: "14 Pro Max", mem: ["128","256","512","1TB"], col: ["🖤","🤍","💜","💛"] },
     { name: "15", mem: ["128","256","512"], col: ["🖤","💙","💚","🩷","💛"] },
-    { name: "15 Plus", mem: ["128","256","512"], col: ["🖤","💙","💚","🩷","💛"] },
-    { name: "15 Pro", mem: ["128","256", "512", "1TB"], col: ["🖤","🤍","💙","🩶"] },
+    { name: "15 Plus", mem: ["128","256"], col: ["🖤","💙","💚","🩷","💛"] },
+    { name: "15 Pro", mem: ["128","256"], col: ["🖤","🤍","💙","🩶"] },
     { name: "15 Pro Max", mem: ["256","512","1TB"], col: ["🖤","🤍","💙","🩶"] }
 ];
 
@@ -437,7 +452,7 @@ const app = {
         stock: JSON.parse(localStorage.getItem('sklad_grouped')) || {},
         history: JSON.parse(localStorage.getItem('sklad_history')) || [],
         curModel: "", curMem: "", activeTab: 'home', editContext: 'new', selectedHistoryId: null,
-        emptyClicks: 0, ptrStart: 0, deferredPrompt: null, toastTimer: null, blurTimer: null
+        emptyClicks: 0, ptrStart: 0, deferredPrompt: null, toastTimer: null
     },
 
     init() {
@@ -447,16 +462,37 @@ const app = {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (localStorage.getItem('theme') === 'system') app.setTheme('system', false); });
         window.addEventListener('popstate', (e) => app.handlePopState(e));
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); app.state.deferredPrompt = e; app.showInstallBtn(); });
+        
+        if (window.visualViewport) {
+            let lastHeight = window.visualViewport.height;
+            window.visualViewport.addEventListener('resize', () => {
+                const currentHeight = window.visualViewport.height;
+                if (currentHeight > lastHeight + 50) { 
+                    if (document.activeElement && document.activeElement.classList.contains('c-input')) { document.activeElement.blur(); }
+                }
+                lastHeight = currentHeight;
+            });
+        }
+
         app.initPTR(); app.renderHistory(); app.updateDraftBtnUI(); app.showInstallBtn(); app.registerSW();
+    },
+
+    plural(n) {
+        return `${n} шт.`;
+    },
+
+    getTotal(s) {
+        let t = 0;
+        for (let m in s) { for (let mem in s[m]) { for (let col in s[m][mem]) { t += (parseInt(s[m][mem][col]) || 0); } } }
+        return t;
     },
 
     showInstallBtn() {
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
         const btn = document.getElementById('installBtn'); if (!btn) return;
         if (isStandalone) { btn.style.display = 'none'; return; }
-        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-        const isPC = window.matchMedia('(pointer: fine)').matches;
-        if (isTouch && !isPC && (app.state.deferredPrompt || /iPad|iPhone|iPod/.test(navigator.userAgent))) { btn.style.display = 'flex'; } else { btn.style.display = 'none'; }
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 0);
+        if (isMobile && (app.state.deferredPrompt || /iPad|iPhone|iPod/.test(navigator.userAgent))) { btn.style.display = 'flex'; } else { btn.style.display = 'none'; }
     },
 
     async installFlow() {
@@ -492,6 +528,7 @@ const app = {
         document.getElementById('headerStatus').classList.remove('visible');
         document.getElementById('headerTitle').innerText = (tab === 'history') ? 'История' : 'СкладРасклад';
         app.updateDraftBtnUI(); if(tab === 'history') app.renderHistory();
+        window.scrollTo(0, 0);
     },
 
     openEditor(context) {
@@ -504,39 +541,29 @@ const app = {
         if (isHist) document.getElementById('globalResetBtn').classList.add('hidden'); else document.getElementById('globalResetBtn').classList.remove('hidden');
         const statusEl = document.getElementById('headerStatus');
         statusEl.classList.add('visible');
-        let label = (context === 'history') ? '📜 ИЗ ИСТОРИИ' : (context === 'draft' && app.state.selectedHistoryId) ? '📜 ПРАВКА' : (context === 'draft') ? '📂 ЧЕРНОВИК' : '✨ НОВЫЙ';
+        
+        let label = (context === 'history') ? '📜 ИЗ ИСТОРИИ' : (app.state.selectedHistoryId) ? '📜 ПРАВКА' : (context === 'draft') ? '📂 ЧЕРНОВИК' : '✨ НОВЫЙ';
         const currentItem = app.state.history.find(h => h.id == app.state.selectedHistoryId);
-        if (currentItem) { label += ` — ${currentItem.name || currentItem.date}`; }
+        if (currentItem && currentItem.name) label += ` — ${currentItem.name}`;
         statusEl.innerText = label;
+
         document.getElementById('editorDangerBtn').innerText = isHist ? 'Удалить' : 'Обнулить';
         app.renderGroupsUI(); app.triggerAnim('model');
+        window.scrollTo(0, 0);
     },
 
     handleInputFocus(el) {
-        if (el.value === "0") {
-            el.value = "";
-        } else {
-            const val = el.value;
-            setTimeout(() => { el.value = ''; el.value = val; }, 10);
-        }
-        clearTimeout(app.state.blurTimer);
-        document.getElementById('scrollContent').style.paddingBottom = '50dvh';
+        if (el.value === "0") { el.value = ""; } 
+        else { const val = el.value; setTimeout(() => { el.value = ''; el.value = val; }, 10); }
         const isAndroid = /Android/i.test(navigator.userAgent);
-        setTimeout(() => {
-            el.closest('.color-item').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, isAndroid ? 400 : 300);
+        setTimeout(() => { el.closest('.color-item').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, isAndroid ? 400 : 300);
     },
 
-    handleInputBlur(el, col) {
-        if(el.value === '') { el.value = '0'; app.setCount(col, 0); }
-        app.state.blurTimer = setTimeout(() => {
-            document.getElementById('keyboardSpacer').style.height = '0';
-            document.getElementById('scrollContent').style.paddingBottom = '';
-        }, 150);
-    },
+    handleInputBlur(el, col) { if(el.value === '') { el.value = '0'; app.setCount(col, 0); } },
 
     renderColorsOnly() {
         const model = app.models.find(m => m.name === app.state.curModel);
+        if(!model) return;
         let sorted = [...model.col].sort((a,b) => { const p = {"💛": 1, "❤️": 2}; return (p[a] || 0) - (p[b] || 0); });
         document.getElementById('colorsList').innerHTML = sorted.map(c => {
             const val = app.state.stock[model.name]?.[app.state.curMem]?.[c] || 0;
@@ -585,9 +612,12 @@ const app = {
 
     confirmStartNew() { app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null; app.save(); app.closeSheets(false); setTimeout(() => app.openEditor('new'), 200); },
     goBack() { history.back(); },
-    handlePopState(e) { const active = document.querySelector('.sheet-overlay.active'); if (active) { active.classList.remove('active'); return; } const s = e.state; if (!s) { app.navTo('home', false); return; } if (s.view === 'editor') app.openEditor(app.state.editContext); else app.navTo(s.tab, false); },
+    handlePopState(e) { 
+        if (document.activeElement) document.activeElement.blur();
+        const active = document.querySelector('.sheet-overlay.active'); if (active) { active.classList.remove('active'); return; } const s = e.state; if (!s) { app.navTo('home', false); return; } if (s.view === 'editor') app.openEditor(app.state.editContext); else app.navTo(s.tab, false); 
+    },
     updateDraftBtnUI() { const hasData = Object.values(app.state.stock).some(m => Object.values(m).some(mem => Object.values(mem).some(v => v > 0))); const btn = document.getElementById('draftBtn'); if (hasData) { btn.classList.remove('btn-draft-empty'); btn.innerHTML = app.state.selectedHistoryId ? "📜 Продолжить правку" : "📂 Продолжить черновик"; } else { btn.classList.add('btn-draft-empty'); btn.innerText = "Нет черновика"; } },
-    renderGroupsUI() { const container = document.getElementById('groupsScroll'); container.innerHTML = app.models.map(m => { const hasData = app.state.stock[m.name] && Object.values(app.state.stock[m.name]).some(mem => Object.values(mem).some(v => v > 0)); return `<div class="group-chip ${app.state.curModel === m.name ? 'active' : ''}" data-name="${m.name}" onclick="app.setModel('${m.name}')">${m.name}${hasData ? '<div class="dot"></div>' : ''}</div>`; }).join(''); const active = container.querySelector('.active'); setTimeout(() => app.scrollToChip(active), 100); },
+    renderGroupsUI() { const container = document.getElementById('groupsScroll'); container.innerHTML = app.models.map(m => { const hasData = app.state.stock[m.name] && Object.values(app.state.stock[m.name]).some(mem => Object.values(mem).some(v => v > 0)); return `<div class="group-chip ${app.state.curModel === m.name ? 'active' : ''}" data-name="${m.name}" onclick="app.setModel('${m.name}')">${m.name}${hasData ? '<div class="dot"></div>' : ''}</div>`; }).join(''); const active = container.querySelector('.active'); if(active) setTimeout(() => app.scrollToChip(active), 100); },
     
     setModel(name) {
         app.state.curModel = name; app.state.curMem = app.models.find(m => m.name === name).mem[0];
@@ -621,8 +651,7 @@ const app = {
         const list = document.getElementById('colorsList');
         if (type === 'model') {
             card.classList.remove('card-jump-anim');
-            void card.offsetWidth; 
-            card.classList.add('card-jump-anim');
+            void card.offsetWidth; card.classList.add('card-jump-anim');
             app.renderEditorContent();
         } else {
             list.classList.remove('list-pop-anim');
@@ -634,6 +663,7 @@ const app = {
 
     renderEditorContent() {
         const model = app.models.find(m => m.name === app.state.curModel);
+        if(!model) return;
         document.getElementById('curModelName').innerText = `iPhone ${model.name}`;
         const memContainer = document.getElementById('memGroup');
         memContainer.innerHTML = model.mem.map(m => `<button class="mem-chip ${app.state.curMem === m ? 'active' : ''}" data-mem="${m}" onclick="app.setMem('${m}')">${m === '1TB' ? '1 TB' : m}</button>`).join('');
@@ -645,13 +675,21 @@ const app = {
             if (diff < 0) { nameEl.style.setProperty('--move-dist', (diff - 10) + 'px'); nameEl.classList.add('marquee-active'); }
         }, 150);
         app.renderColorsOnly();
-        app.scrollToChip(document.querySelector('.group-chip.active'));
     },
 
     save() { localStorage.setItem('sklad_grouped', JSON.stringify(app.state.stock)); },
     getLabel(emoji, modelName) { if(emoji === "💛") { if(modelName.includes("16 Pro")) return "пустынный"; if(modelName.includes("Pro") || modelName.includes("XS")) return "золотой"; return "жёлтый"; } const map = {"🖤":"чёрный","🤍":"белый","💙":"синий","💚":"зелёный","❤️":"красный","💜":"фиолетовый","🩷":"розовый","🧡":"коралловый","🩶":"титан"}; return map[emoji] || ""; },
     resetEditor() { app.state.stock = {}; app.save(); app.closeSheets(true); app.renderGroupsUI(); app.triggerAnim('model'); app.updateDraftBtnUI(); app.toast("Склад очищен"); },
-    finish() { const t = app.gen(); if(!t) return app.toast("СкладРасклад пуст"); document.getElementById('reportText').innerText = t; const isEdit = (app.state.selectedHistoryId != null); const shareBtn = document.getElementById('mainShareBtn'); const saveBtn = document.getElementById('saveChangesBtn'); saveBtn.style.display = isEdit ? 'block' : 'none'; if(isEdit) { shareBtn.classList.remove('btn-primary'); shareBtn.classList.add('btn-secondary'); } else { shareBtn.classList.remove('btn-secondary'); shareBtn.classList.add('btn-primary'); } app.openSheet('reportSheet'); },
+    finish() { 
+        const t = app.gen(); if(!t) return app.toast("СкладРасклад пуст"); 
+        document.getElementById('reportText').innerText = t; 
+        document.getElementById('reportTotalLine').innerText = `Всего ${app.plural(app.getTotal(app.state.stock))}`;
+        const isEdit = (app.state.selectedHistoryId != null); 
+        const shareBtn = document.getElementById('mainShareBtn'); 
+        const saveBtn = document.getElementById('saveChangesBtn'); 
+        saveBtn.style.display = isEdit ? 'block' : 'none'; 
+        if(isEdit) { shareBtn.classList.remove('btn-primary'); shareBtn.classList.add('btn-secondary'); } else { shareBtn.classList.remove('btn-secondary'); shareBtn.classList.add('btn-primary'); } app.openSheet('reportSheet'); 
+    },
     
     gen() {
         let res = "";
@@ -670,8 +708,8 @@ const app = {
     async copyAndSave() { const t = app.gen(); const ok = await app.copy(t); if(ok) app.finalizeReport(t, 'copy'); },
     saveHistoryEdit() { const t = app.gen(); const entry = app.state.history.find(h => h.id == app.state.selectedHistoryId); if (entry) { entry.content = t; entry.stock = JSON.parse(JSON.stringify(app.state.stock)); entry.updated = new Date().toLocaleString('ru-RU'); localStorage.setItem('sklad_history', JSON.stringify(app.state.history)); app.state.stock = {}; app.save(); app.closeSheets(true); app.toast("Сохранено!"); setTimeout(() => app.navTo('home'), 200); } },
     finalizeReport(text, method) { const isEdit = (app.state.selectedHistoryId != null); if (isEdit) { const entry = app.state.history.find(h => h.id == app.state.selectedHistoryId); if (entry) { entry.content = text; entry.stock = JSON.parse(JSON.stringify(app.state.stock)); entry.updated = new Date().toLocaleString('ru-RU'); } } else { app.state.history.unshift({ id: Date.now(), date: new Date().toLocaleString('ru-RU'), content: text, stock: JSON.parse(JSON.stringify(app.state.stock)), updated: null }); } localStorage.setItem('sklad_history', JSON.stringify(app.state.history)); app.state.stock = {}; app.state.editContext = 'new'; app.state.selectedHistoryId = null; app.save(); app.renderHistory(); app.closeSheets(true); app.toast(method === 'share' ? "Отправлено и сохранено!" : "Скопировано и сохранено!"); setTimeout(() => app.navTo('home'), 200); },
-    renderHistory() { const list = document.getElementById('historyList'); const clearBtn = document.getElementById('clearHistoryTrigger'); if(!app.state.history.length) { list.innerHTML = `<p style="text-align:center; padding:50px; color:var(--text-tertiary);">Тут пока пусто</p>`; if(clearBtn) clearBtn.style.display = 'none'; return; } list.innerHTML = app.state.history.map(h => `<div class="history-card" onclick="app.openHistoryItem('${h.id}')">${h.name ? `<div style="font-weight:800; margin-bottom:4px;">${h.name}</div>` : ''}<div style="font-size:12px; color:var(--primary); font-weight:600; margin-bottom:5px;">${h.date}</div><div class="h-text">${h.content}</div></div>`).join(''); if(clearBtn) clearBtn.style.display = 'flex'; },
-    openHistoryItem(id) { const item = app.state.history.find(h => h.id == id); if(!item) return; document.getElementById('histSheetDate').innerText = item.name || item.date; document.getElementById('histSheetText').innerText = item.content; let meta = `<b>Создано:</b> ${item.date}`; if(item.updated) meta += `<br><b>Изменено:</b> ${item.updated}`; document.getElementById('histMetaBox').innerHTML = meta; app.state.selectedHistoryId = id; app.openSheet('historyActionSheet'); },
+    renderHistory() { const list = document.getElementById('historyList'); const clearBtn = document.getElementById('clearHistoryTrigger'); if(!app.state.history.length) { list.innerHTML = `<p style="text-align:center; padding:50px; color:var(--text-tertiary);">Тут пока пусто</p>`; if(clearBtn) clearBtn.style.display = 'none'; return; } list.innerHTML = app.state.history.map(h => `<div class="history-card" onclick="app.openHistoryItem('${h.id}')">${h.name ? `<div class="h-title">${h.name}</div>` : ''}<div class="h-date">${h.date}</div><div class="h-count">${app.plural(app.getTotal(h.stock))}</div></div>`).join(''); if(clearBtn) clearBtn.style.display = 'flex'; },
+    openHistoryItem(id) { const item = app.state.history.find(h => h.id == id); if(!item) return; document.getElementById('histSheetDate').innerText = item.name || item.date; document.getElementById('histSheetText').innerText = item.content; let meta = `<b>Создано:</b> ${item.date}`; if(item.updated) meta += `<br><b>Изменено:</b> ${item.updated}`; meta += `<br><b>Всего</b> ${app.plural(app.getTotal(item.stock))}`; document.getElementById('histMetaBox').innerHTML = meta; app.state.selectedHistoryId = id; app.openSheet('historyActionSheet'); },
     async shareFromHistory() { const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); if (navigator.share && item) { try { await navigator.share({ text: item.content }).catch(()=>{}); } catch (e) {} } app.closeSheets(true); app.toast("Отправлено!"); },
     async copyFromHistory() { const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); if(item) { const ok = await app.copy(item.content); if(ok) { app.closeSheets(true); app.toast("Скопировано!"); } } },
     editFromHistory() {
@@ -692,6 +730,7 @@ const app = {
     deleteFromHistory() { app.state.history = app.state.history.filter(h => h.id != app.state.selectedHistoryId); localStorage.setItem('sklad_history', JSON.stringify(app.state.history)); app.renderHistory(); app.closeSheets(true); app.toast("Удалено"); },
     clearHistory() { app.state.history = []; localStorage.removeItem('sklad_history'); app.renderHistory(); app.closeSheets(true); app.toast("История очищена"); },
     saveRename() { const newTitle = document.getElementById('renameInput').value.trim(); const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); if (item) { item.name = newTitle; localStorage.setItem('sklad_history', JSON.stringify(app.state.history)); app.renderHistory(); app.closeSheets(true); setTimeout(() => app.openHistoryItem(item.id), 200); app.toast("Сохранено"); } },
+    
     openSheet(id) { 
         const el = document.getElementById(id); if(el) { 
             if (id === 'renameSheet') { const item = app.state.history.find(h => h.id == app.state.selectedHistoryId); document.getElementById('renameInput').value = item.name || ''; }
@@ -700,9 +739,14 @@ const app = {
     },
     closeSheets(back = true) { const active = document.querySelector('.sheet-overlay.active'); if(active) { active.classList.remove('active'); if(back) history.back(); } },
     setTheme(m, close=true) { 
-        localStorage.setItem('theme', m); const dark = m === 'dark' || (m === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches); 
-        document.documentElement.classList.toggle('dark', dark); document.getElementById('themeColorMeta').setAttribute('content', dark ? '#000000' : '#f2f2f7'); 
-        document.getElementById('themeIconMain').innerText = dark ? '🌙' : '☀️'; 
+        localStorage.setItem('theme', m); 
+        const dark = m === 'dark' || (m === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches); 
+        document.documentElement.classList.toggle('dark', dark); 
+        document.getElementById('themeColorMeta').setAttribute('content', dark ? '#000000' : '#f2f2f7'); 
+        const iconBox = document.getElementById('themeIconMain');
+        iconBox.innerHTML = dark ? 
+            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>` : 
+            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
         document.querySelectorAll('.theme-item').forEach(el => el.classList.toggle('active', el.id === 't-' + m));
         if(close) app.closeSheets(true); 
     },
