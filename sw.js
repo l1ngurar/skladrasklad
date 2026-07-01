@@ -3,8 +3,6 @@ const CACHE_NAME = 'skladrasklad-v14';
 const assets = [
   './',
   './index.html',
-  './index_office.html',
-  './index_retail.html',
   './manifest.json',
   './icon-64.png',
   './icon-256.png',
