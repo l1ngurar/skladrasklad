@@ -276,6 +276,7 @@
 
         <h4 style="font-size:12px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:10px; text-align:left; padding-left:5px;">История обновлений</h4>
         <div class="info-group">
+            <div class="log-row"><b>v12</b><span>Исправлен баг с зелеными индикаторами у моделей — теперь они мгновенно обновляются в реальном времени при вводе количества.</span></div>
             <div class="log-row"><b>v11</b><span>Добавлены счетчики количества. Исправлен масштаб интерфейса на ПК (так было надо). Оптимизирована логика свайпов и скролла.</span></div>
             <div class="log-row"><b>v10</b><span>Обновил "зеленые индикаторы", теперь они подсвечивают и заполненою память. СкладРаскладу из истории теперь можно задать своё название. И оно будет отображаться в редакторе, когда СкладРасклад будет открыт для редактирования. А еще у каждого СкладРасклада видны даты создания и изменения. Теперь в выгрузке отображаются и пустые значения, т.к. оказалось удобнее, чем без них.</span></div>
             <div class="log-row"><b>v9</b><span>Первая стабильная версия. Четыре дня мучений не прошли зря :D</span></div>
@@ -576,7 +577,7 @@ const app = {
         const m = app.state.curModel, mem = app.state.curMem;
         if(!app.state.stock[m]) app.state.stock[m] = {}; if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, parseInt(val) || 0);
-        app.save(); app.updateMemHighlights();
+        app.save(); app.updateMemHighlights(); app.updateGroupHighlights();
     },
 
     changeCount(col, delta) {
@@ -584,7 +585,7 @@ const app = {
         if(!app.state.stock[m]) app.state.stock[m] = {}; if(!app.state.stock[m][mem]) app.state.stock[m][mem] = {};
         app.state.stock[m][mem][col] = Math.max(0, (app.state.stock[m][mem][col] || 0) + delta);
         if (window.navigator.vibrate) window.navigator.vibrate(15);
-        app.save(); app.renderColorsOnly(); app.updateMemHighlights();
+        app.save(); app.renderColorsOnly(); app.updateMemHighlights(); app.updateGroupHighlights();
     },
 
     scrollToChip(el) { if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); },
@@ -643,6 +644,25 @@ const app = {
             const memSize = el.getAttribute('data-mem');
             const hasData = app.state.stock[m]?.[memSize] && Object.values(app.state.stock[m][memSize]).some(v => v > 0);
             el.classList.toggle('filled', !!hasData);
+        });
+    },
+
+    updateGroupHighlights() {
+        document.querySelectorAll('.group-chip').forEach(el => {
+            const name = el.getAttribute('data-name');
+            const hasData = app.state.stock[name] && Object.values(app.state.stock[name]).some(mem => Object.values(mem).some(v => v > 0));
+            let dot = el.querySelector('.dot');
+            if (hasData) {
+                if (!dot) {
+                    dot = document.createElement('div');
+                    dot.className = 'dot';
+                    el.appendChild(dot);
+                }
+            } else {
+                if (dot) {
+                    dot.remove();
+                }
+            }
         });
     },
 
